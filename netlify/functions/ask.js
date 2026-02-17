@@ -83,6 +83,13 @@ const FACTION_ITEMS = {
   'war shout':              'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
   'acrobatic':              'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
   'khaine':                 'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
+  'dire avenger':           'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
+  'dire avengers':          'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
+  'avenger exarch':         'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
+  'avenger shuriken':       'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
+  'shuriken catapult':      'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
+  'diresword':              'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
+  'power glaive':           'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
 
   // ── KOMMANDOS ─────────────────────────────────────────────────────────
   'bomb squig':             'https://wahapedia.ru/kill-team3/kill-teams/kommandos/',
@@ -379,6 +386,39 @@ function detectFactionItemUrl(question) {
   return null;
 }
 
+const FACTION_NAMES_FOR_AI = Object.keys(FACTION_URLS).filter(k => k.length > 4);
+
+async function detectFactionViaAI(question, apiKey) {
+  // Cheap single-token classification call to identify faction
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 20,
+        system: 'You identify which Kill Team faction a question is about. Reply with ONLY the faction name from the list, exactly as written, or "none" if unclear. Factions: ' + FACTION_NAMES_FOR_AI.join(', '),
+        messages: [{ role: 'user', content: question }],
+      }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const reply = (data.content[0]?.text || '').trim().toLowerCase();
+    if (reply === 'none' || reply === '') return null;
+    // Find matching URL
+    for (const [key, url] of Object.entries(FACTION_URLS)) {
+      if (reply.includes(key) || key.includes(reply)) return url;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 
 const TOPIC_URLS = {
   'killzone':            'https://wahapedia.ru/kill-team3/the-rules/killzones/',
@@ -626,7 +666,12 @@ exports.handler = async function(event) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing question' }) };
   }
 
-  const factionUrl = detectFactionUrl(question) || detectFactionItemUrl(question);
+  // 1. Fast keyword detection
+  let factionUrl = detectFactionUrl(question) || detectFactionItemUrl(question);
+  // 2. If no keyword match, use a cheap AI classification call
+  if (!factionUrl) {
+    factionUrl = await detectFactionViaAI(question, apiKey);
+  }
   const topicUrl = detectTopicUrl(question);
   const sectionKeywords = detectSectionKeywords(question);
   const rulesUrl = factionUrl || topicUrl || CORE_RULES_URL;
@@ -655,9 +700,9 @@ END OF RULES TEXT
 
 Instructions:
 - Start your response with exactly "VERIFIED:" if the answer is clearly present in the rules text above
-- Start your response with exactly "UNVERIFIED:" if the answer is NOT in the provided text and you are answering from training knowledge
+- Start your response with exactly "UNVERIFIED:" if the answer is NOT fully in the provided text
+- When using UNVERIFIED: you MUST still answer the question fully from your Kill Team 3rd Edition training knowledge — never say you cannot answer, never ask for more information
 - Prioritise the rules text when it contains the answer — quote exact rule names and text when relevant
-- If the answer is not in the provided text, answer from your Kill Team 3rd Edition training knowledge — do not refuse to answer
 - Keep answers concise unless the rule requires detail
 - Write in plain prose, no markdown, no bullet points`;
 
