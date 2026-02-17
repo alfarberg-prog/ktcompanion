@@ -68,7 +68,7 @@ const FACTION_ITEMS = {
   'veil of tears':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
   'cegorach':               'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
   'motley':                 'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'player':                 'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
+
   'shadowseer':             'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
   'death jester':           'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
 
@@ -167,8 +167,7 @@ const FACTION_ITEMS = {
   'mole mortar':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
   'krieg':                  'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
   'demo charge':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
-  'flamer':                 'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
-  'meltagun':               'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
+
 
   // ── IMPERIAL NAVY BREACHERS ───────────────────────────────────────────
   'void sergeant':          'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
@@ -179,7 +178,7 @@ const FACTION_ITEMS = {
   'breachers':              'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
   'gheistskull':            'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
   'armsman':                'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'gunner':                 'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
+
 
   // ── EXACTION SQUAD ────────────────────────────────────────────────────
   'vigilant':               'https://wahapedia.ru/kill-team3/kill-teams/exaction-squad/',
@@ -230,7 +229,7 @@ const FACTION_ITEMS = {
   'hotshot':                'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
   'volley gun':             'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
   'taurox':                 'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'plasma pistol':          'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
+
 
   // ── INTERCESSION SQUAD ────────────────────────────────────────────────
   'bolt carbine':           'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
@@ -238,7 +237,7 @@ const FACTION_ITEMS = {
   'aggressor':              'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'intercessor':            'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'infiltrator':            'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'incursor':               'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
+  'incursor sergeant':      'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'eliminator':             'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'las fusil':              'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'bolt sniper':            'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
@@ -267,9 +266,9 @@ const FACTION_ITEMS = {
   'data-tether':            'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
 
   // ── WYRMBLADE ─────────────────────────────────────────────────────────
-  'hybrid':                 'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
+  'hybrid metamorph':      'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
   'neophyte':               'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
-  'acolyte':                'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
+  'acolyte hybrid':         'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
   'kelermorph':             'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
   'locus':                  'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
   'sanctus':                'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
@@ -304,7 +303,6 @@ const FACTION_ITEMS = {
   'cthonian':               'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
   'ironhead':               'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
   'pan spectral scanner':   'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
-  'HYLas':                  'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
   'hylas':                  'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
   'magna-coil':             'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
 
@@ -321,7 +319,6 @@ const FACTION_ITEMS = {
   'scion of cadia':         'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
   'cadian':                 'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
   'hot-shot lasgun':        'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
-  'plasma gun':             'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
 
   // ── TALONS OF THE EMPEROR ─────────────────────────────────────────────
   'custodian':              'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
@@ -349,7 +346,7 @@ const FACTION_ITEMS = {
   'jokaero':                'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
   'deathwatch':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
   'daemonhost':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-  'peniten engine':         'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
+  'penitent engine':        'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
 
   // ── BLOOD ANGELS ─────────────────────────────────────────────────────
   'blood angel':            'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
@@ -380,7 +377,8 @@ const FACTION_ITEMS = {
 
 function detectFactionItemUrl(question) {
   const q = question.toLowerCase();
-  for (const [item, url] of Object.entries(FACTION_ITEMS)) {
+  const sorted = Object.entries(FACTION_ITEMS).sort((a, b) => b[0].length - a[0].length);
+  for (const [item, url] of sorted) {
     if (q.includes(item)) return url;
   }
   return null;
@@ -557,15 +555,9 @@ const SECTION_KEYWORDS = {
 
 function detectTopicUrl(question) {
   const q = question.toLowerCase();
-  for (const [key, url] of Object.entries(TOPIC_URLS)) {
-    if (q.includes(key)) return url;
-  }
-  return null;
-}
-
-function detectFactionUrl(question) {
-  const q = question.toLowerCase();
-  for (const [key, url] of Object.entries(FACTION_URLS)) {
+  // Sort by key length descending so more specific matches win
+  const sorted = Object.entries(TOPIC_URLS).sort((a, b) => b[0].length - a[0].length);
+  for (const [key, url] of sorted) {
     if (q.includes(key)) return url;
   }
   return null;
@@ -573,10 +565,11 @@ function detectFactionUrl(question) {
 
 function detectSectionKeywords(question) {
   const q = question.toLowerCase();
+  const allKeywords = [];
   for (const [topic, keywords] of Object.entries(SECTION_KEYWORDS)) {
-    if (q.includes(topic)) return keywords;
+    if (q.includes(topic)) allKeywords.push(...keywords);
   }
-  return null;
+  return allKeywords.length > 0 ? [...new Set(allKeywords)] : null;
 }
 
 function stripHtml(html) {
@@ -603,14 +596,13 @@ function stripHtml(html) {
 }
 
 // Extract the most relevant section from the full page text
-function extractRelevantSection(fullText, sectionKeywords) {
+function extractRelevantSection(fullText, sectionKeywords, largeContext) {
+  const windowSize = largeContext ? 20000 : 12000;
+
   if (!sectionKeywords) {
-    // No specific section — return a broad middle chunk that skips nav
-    const start = Math.min(2000, Math.floor(fullText.length * 0.1));
-    return fullText.slice(start, start + 12000);
+    return fullText.slice(0, windowSize);
   }
 
-  // Find the earliest occurrence of any section keyword
   let bestIndex = -1;
   for (const kw of sectionKeywords) {
     const idx = fullText.toLowerCase().indexOf(kw.toLowerCase());
@@ -620,25 +612,34 @@ function extractRelevantSection(fullText, sectionKeywords) {
   }
 
   if (bestIndex === -1) {
-    // Keyword not found — return middle of document
-    const start = Math.min(2000, Math.floor(fullText.length * 0.1));
-    return fullText.slice(start, start + 12000);
+    return fullText.slice(0, windowSize);
   }
 
-  // Return 500 chars before and 7500 chars after the found section
   const start = Math.max(0, bestIndex - 500);
-  return fullText.slice(start, start + 12000);
+  return fullText.slice(start, start + windowSize);
 }
 
-async function fetchRulesContext(url, sectionKeywords) {
+// In-memory cache for fetched pages (persists across warm invocations)
+const pageCache = new Map();
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+async function fetchRulesContext(url, sectionKeywords, largeContext) {
   try {
-    const res = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; KTCompanion/1.0)' },
-    });
-    if (!res.ok) return null;
-    const html = await res.text();
-    const fullText = stripHtml(html);
-    return extractRelevantSection(fullText, sectionKeywords);
+    const now = Date.now();
+    let fullText;
+    const cached = pageCache.get(url);
+    if (cached && (now - cached.ts) < CACHE_TTL_MS) {
+      fullText = cached.text;
+    } else {
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; KTCompanion/1.0)' },
+      });
+      if (!res.ok) return null;
+      const html = await res.text();
+      fullText = stripHtml(html);
+      pageCache.set(url, { text: fullText, ts: now });
+    }
+    return extractRelevantSection(fullText, sectionKeywords, largeContext);
   } catch {
     return null;
   }
@@ -666,44 +667,64 @@ exports.handler = async function(event) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing question' }) };
   }
 
-  // 1. Fast keyword detection
-  let factionUrl = detectFactionUrl(question) || detectFactionItemUrl(question);
-  // 2. If no keyword match, use a cheap AI classification call
-  if (!factionUrl) {
-    factionUrl = await detectFactionViaAI(question, apiKey);
+  // 1. Fast keyword detection — find up to two factions
+  const q = question.toLowerCase();
+  const allFactionEntries = Object.entries(FACTION_URLS).sort((a,b) => b[0].length - a[0].length);
+  const detectedFactionUrls = [];
+  for (const [key, url] of allFactionEntries) {
+    if (q.includes(key) && !detectedFactionUrls.includes(url)) {
+      detectedFactionUrls.push(url);
+      if (detectedFactionUrls.length === 2) break;
+    }
   }
+  // Check faction items if we haven't found anything yet
+  if (detectedFactionUrls.length === 0) {
+    const itemUrl = detectFactionItemUrl(question);
+    if (itemUrl) detectedFactionUrls.push(itemUrl);
+  }
+  // 2. AI classification if still nothing found
+  if (detectedFactionUrls.length === 0) {
+    const aiUrl = await detectFactionViaAI(question, apiKey);
+    if (aiUrl) detectedFactionUrls.push(aiUrl);
+  }
+
   const topicUrl = detectTopicUrl(question);
   const sectionKeywords = detectSectionKeywords(question);
-  const rulesUrl = factionUrl || topicUrl || CORE_RULES_URL;
+  const isListQuestion = /list|all|every|each|complete/.test(question.toLowerCase());
 
-  // For terrain/vantage, fetch both killzones and core rules pages
+  // Always fetch core rules — disputes almost always involve core + faction rules
+  // Also fetch terrain/killzones if relevant
   const terrainTopics = ['vantage', 'terrain', 'barricade', 'traversable'];
-  const isTerrainQ = !factionUrl && terrainTopics.some(t => question.toLowerCase().includes(t));
-  let rulesContext;
-  if (isTerrainQ) {
-    const [kzText, coreText] = await Promise.all([
-      fetchRulesContext('https://wahapedia.ru/kill-team3/the-rules/killzones/', sectionKeywords),
-      fetchRulesContext(CORE_RULES_URL, sectionKeywords),
-    ]);
-    rulesContext = [kzText, coreText].filter(Boolean).join('\n\n---\n\n');
-  } else {
-    rulesContext = await fetchRulesContext(rulesUrl, sectionKeywords);
-  }
+  const isTerrainQ = terrainTopics.some(t => q.includes(t));
 
-  const sourceLabel = factionUrl ? 'faction page' : topicUrl ? 'rules page' : 'core rules page';
-  const system = `You are a Kill Team 3rd Edition rules expert. You have been given rules text fetched directly from the Wahapedia ${sourceLabel} to answer this question accurately.
+  const fetchUrls = new Set([CORE_RULES_URL]);
+  detectedFactionUrls.forEach(u => fetchUrls.add(u));
+  if (topicUrl) fetchUrls.add(topicUrl);
+  if (isTerrainQ) fetchUrls.add('https://wahapedia.ru/kill-team3/the-rules/killzones/');
 
-RULES TEXT FROM WAHAPEDIA:
+  // Fetch all relevant pages in parallel
+  const fetchedTexts = await Promise.all(
+    [...fetchUrls].map(url => fetchRulesContext(url, sectionKeywords, isListQuestion))
+  );
+  const rulesContext = fetchedTexts.filter(Boolean).join('\n\n---\n\n');
+
+  const sourceLabel = detectedFactionUrls.length > 0 ? 'faction and core rules pages' : topicUrl ? 'rules page and core rules' : 'core rules page';
+  const system = `You are a Kill Team 3rd Edition rules referee. Players come to you mid-game to resolve rules disputes and answer rules questions. You give clear, definitive rulings.
+
+RULES TEXT FROM WAHAPEDIA (${sourceLabel}):
 ${rulesContext || 'Could not fetch rules — answer from training knowledge and flag any uncertainty.'}
 
 END OF RULES TEXT
 
 Instructions:
-- Start your response with exactly "VERIFIED:" if the answer is clearly present in the rules text above
-- Start your response with exactly "UNVERIFIED:" if the answer is NOT fully in the provided text
-- When using UNVERIFIED: you MUST still answer the question fully from your Kill Team 3rd Edition training knowledge — never say you cannot answer, never ask for more information
-- Prioritise the rules text when it contains the answer — quote exact rule names and text when relevant
-- Keep answers concise unless the rule requires detail
+- Start your response with exactly "VERIFIED:" if your ruling is clearly supported by the rules text above
+- Start your response with exactly "UNVERIFIED:" if you are drawing on training knowledge because the answer is not in the provided text
+- When using UNVERIFIED: still give a full, definitive answer — never refuse or say you cannot answer
+- For dispute questions: identify which rules are in tension, quote the exact relevant rule text from above, then give a clear ruling on how they interact
+- For factual questions: lead with the direct answer, then quote the relevant rule text
+- If two faction rules interact, address both sides explicitly
+- Be definitive — players need a ruling, not a discussion. Say "the ruling is" not "it depends"
+- Keep answers concise: 2-4 sentences for simple questions, up to 8 for complex interactions
 - Write in plain prose, no markdown, no bullet points`;
 
   try {
@@ -716,7 +737,7 @@ Instructions:
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
+        max_tokens: 2048,
         system: system,
         messages: [{ role: 'user', content: 'Kill Team 3rd Edition rules question: ' + question }],
       }),
@@ -735,13 +756,13 @@ Instructions:
       return { statusCode: response.status, body: JSON.stringify({ error: data.error ? data.error.message : 'API error ' + response.status }) };
     }
 
-    var answer = '';
-    for (var i = 0; i < (data.content || []).length; i++) {
+    let answer = '';
+    for (let i = 0; i < (data.content || []).length; i++) {
       if (data.content[i].type === 'text') answer += data.content[i].text;
     }
     answer = answer.trim();
 
-    var usedFallback = false;
+    let usedFallback = false;
     if (answer.startsWith('UNVERIFIED:')) {
       usedFallback = true;
       answer = answer.replace(/^UNVERIFIED:\s*/i, '').trim();
