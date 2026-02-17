@@ -74,14 +74,113 @@ const TOPIC_URLS = {
 
 // Keywords to help find the right section in the page
 const SECTION_KEYWORDS = {
-  'firefight ploy':   ['firefight ploy', 'firefight ploys', 'FIREFIGHT PLOY'],
-  'strategic ploy':   ['strategic ploy', 'strategic ploys', 'STRATEGIC PLOY'],
-  'tactical ploy':    ['tactical ploy', 'tactical ploys', 'TACTICAL PLOY'],
-  'ploy':             ['firefight ploy', 'strategic ploy', 'PLOY'],
-  'equipment':        ['equipment', 'EQUIPMENT'],
-  'operative':        ['operative', 'OPERATIVE'],
-  'ability':          ['ability', 'abilities', 'ABILITY'],
-  'action':           ['action', 'ACTION'],
+  // Ploys
+  'firefight ploy':     ['Firefight Ploy', 'FIREFIGHT PLOY'],
+  'strategic ploy':     ['Strategic Ploy', 'STRATEGIC PLOY'],
+  'tactical ploy':      ['Tactical Ploy', 'TACTICAL PLOY'],
+  'ploy':               ['Firefight Ploy', 'Strategic Ploy', 'PLOY'],
+
+  // Actions
+  'normal move':        ['Normal Move', 'NORMAL MOVE'],
+  'dash':               ['Dash', 'DASH'],
+  'fall back':          ['Fall Back', 'FALL BACK'],
+  'charge':             ['Charge', 'CHARGE'],
+  'shoot':              ['Shoot', 'SHOOT'],
+  'fight':              ['Fight', 'FIGHT'],
+  'overwatch':          ['Overwatch', 'OVERWATCH'],
+  'pick up':            ['Pick Up', 'PICK UP'],
+  'action':             ['Action', 'ACTION'],
+
+  // Orders
+  'conceal':            ['Conceal', 'Conceal order', 'CONCEAL'],
+  'engage':             ['Engage', 'Engage order', 'ENGAGE'],
+
+  // Movement & Terrain
+  'vantage':            ['Vantage', 'VANTAGE', 'vantage point'],
+  'cover':              ['Cover', 'Light Cover', 'Heavy Cover', 'COVER'],
+  'light cover':        ['Light Cover', 'LIGHT COVER'],
+  'heavy cover':        ['Heavy Cover', 'HEAVY COVER'],
+  'obscuring':          ['Obscuring', 'OBSCURING'],
+  'traverse':           ['Traverse', 'TRAVERSE'],
+  'climb':              ['Climb', 'CLIMB'],
+  'jump':               ['Jump', 'JUMP'],
+  'fly':                ['Fly', 'FLY'],
+  'line of sight':      ['Line of Sight', 'LINE OF SIGHT'],
+  'visibility':         ['Visible', 'Visibility', 'VISIBLE'],
+  'coherency':          ['Coherency', 'COHERENCY'],
+  'within range':       ['within range', 'Within Range'],
+  'terrain':            ['Terrain', 'TERRAIN'],
+  'barricade':          ['Barricade', 'BARRICADE'],
+  'door':               ['Door', 'DOOR'],
+  'ladder':             ['Ladder', 'LADDER'],
+
+  // Shooting mechanics
+  'hit roll':           ['Hit Roll', 'HIT ROLL'],
+  'wound roll':         ['Wound Roll', 'WOUND ROLL'],
+  'save':               ['Save Roll', 'SAVE', 'saving throw'],
+  'armour':             ['Armour', 'Save Roll', 'ARMOUR'],
+  'armor':              ['Armour', 'Save Roll', 'ARMOUR'],
+  'critical hit':       ['Critical Hit', 'CRITICAL HIT'],
+  'normal hit':         ['Normal Hit', 'NORMAL HIT'],
+  'lethal':             ['Lethal', 'LETHAL'],
+  'ceaseless':          ['Ceaseless', 'CEASELESS'],
+  'balanced':           ['Balanced', 'BALANCED'],
+  'rending':            ['Rending', 'RENDING'],
+  'indirect':           ['Indirect', 'INDIRECT'],
+  'torrent':            ['Torrent', 'TORRENT'],
+  'blast':              ['Blast', 'BLAST'],
+  'ap':                 ['AP', 'Armour Penetration'],
+  'damage':             ['Damage', 'DAMAGE'],
+  'attacks':            ['Attacks', 'attack dice'],
+  'ballistic skill':    ['Ballistic Skill', 'BS'],
+  'weapon skill':       ['Weapon Skill', 'WS'],
+
+  // Fighting mechanics
+  'parry':              ['Parry', 'PARRY'],
+  'reroll':             ['Reroll', 'Re-roll', 'REROLL'],
+  'strike first':       ['Strike First', 'STRIKE FIRST'],
+  'fury':               ['Fury', 'FURY'],
+
+  // Operative states & conditions
+  'incapacitated':      ['Incapacitated', 'INCAPACITATED'],
+  'injured':            ['Injured', 'INJURED'],
+  'flesh wound':        ['Flesh Wound', 'FLESH WOUND'],
+  'stunned':            ['Stunned', 'STUN'],
+  'ready':              ['Ready', 'READY'],
+  'activated':          ['Activated', 'activation'],
+
+  // Game structure
+  'turning point':      ['Turning Point', 'TURNING POINT'],
+  'strategy phase':     ['Strategy Phase', 'STRATEGY PHASE'],
+  'firefight phase':    ['Firefight Phase', 'FIREFIGHT PHASE'],
+  'initiative':         ['Initiative', 'INITIATIVE'],
+  'activation':         ['Activation', 'activate'],
+  'kill point':         ['Kill Point', 'KILL POINT'],
+  'victory point':      ['Victory Point', 'VP', 'VICTORY POINT'],
+
+  // Special rules & keywords
+  'leader':             ['Leader', 'LEADER'],
+  'sniper':             ['Sniper', 'SNIPER'],
+  'scout':              ['Scout', 'SCOUT'],
+  'medic':              ['Medic', 'MEDIC'],
+  'heavy':              ['Heavy', 'HEAVY'],
+  'silent':             ['Silent', 'SILENT'],
+  'infiltrate':         ['Infiltrate', 'INFILTRATE'],
+  'reinforcement':      ['Reinforcement', 'REINFORCEMENT'],
+  'scouting':           ['Scouting', 'SCOUTING'],
+
+  // Equipment
+  'equipment':          ['Equipment', 'EQUIPMENT'],
+  'grenade':            ['Grenade', 'GRENADE'],
+  'auspex':             ['Auspex', 'AUSPEX'],
+  'breaching charge':   ['Breaching Charge', 'BREACHING CHARGE'],
+
+  // General
+  'operative':          ['Operative', 'OPERATIVE'],
+  'ability':            ['Ability', 'Abilities', 'ABILITY'],
+  'special rule':       ['Special Rule', 'SPECIAL RULE'],
+  'unique action':      ['Unique Action', 'UNIQUE ACTION'],
+  'tac op':             ['Tac Op', 'TAC OP'],
 };
 
 function detectTopicUrl(question) {
