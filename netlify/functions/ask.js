@@ -70,6 +70,12 @@ const TOPIC_URLS = {
   'approved ops':        'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
   'approved op':         'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
   'approved ops 2025':   'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'vantage':             'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'terrain':             'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'light terrain':       'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'heavy terrain':       'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'traversable':         'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'barricade':           'https://wahapedia.ru/kill-team3/the-rules/killzones/',
 };
 
 // Keywords to help find the right section in the page
@@ -235,7 +241,7 @@ function extractRelevantSection(fullText, sectionKeywords) {
   if (!sectionKeywords) {
     // No specific section — return a broad middle chunk that skips nav
     const start = Math.min(2000, Math.floor(fullText.length * 0.1));
-    return fullText.slice(start, start + 8000);
+    return fullText.slice(start, start + 12000);
   }
 
   // Find the earliest occurrence of any section keyword
@@ -250,12 +256,12 @@ function extractRelevantSection(fullText, sectionKeywords) {
   if (bestIndex === -1) {
     // Keyword not found — return middle of document
     const start = Math.min(2000, Math.floor(fullText.length * 0.1));
-    return fullText.slice(start, start + 8000);
+    return fullText.slice(start, start + 12000);
   }
 
   // Return 500 chars before and 7500 chars after the found section
   const start = Math.max(0, bestIndex - 500);
-  return fullText.slice(start, start + 8000);
+  return fullText.slice(start, start + 12000);
 }
 
 async function fetchRulesContext(url, sectionKeywords) {
@@ -298,7 +304,20 @@ exports.handler = async function(event) {
   const topicUrl = detectTopicUrl(question);
   const sectionKeywords = detectSectionKeywords(question);
   const rulesUrl = factionUrl || topicUrl || CORE_RULES_URL;
-  const rulesContext = await fetchRulesContext(rulesUrl, sectionKeywords);
+
+  // For terrain/vantage, fetch both killzones and core rules pages
+  const terrainTopics = ['vantage', 'terrain', 'barricade', 'traversable'];
+  const isTerrainQ = !factionUrl && terrainTopics.some(t => question.toLowerCase().includes(t));
+  let rulesContext;
+  if (isTerrainQ) {
+    const [kzText, coreText] = await Promise.all([
+      fetchRulesContext('https://wahapedia.ru/kill-team3/the-rules/killzones/', sectionKeywords),
+      fetchRulesContext(CORE_RULES_URL, sectionKeywords),
+    ]);
+    rulesContext = [kzText, coreText].filter(Boolean).join('\n\n---\n\n');
+  } else {
+    rulesContext = await fetchRulesContext(rulesUrl, sectionKeywords);
+  }
 
   const sourceLabel = factionUrl ? 'faction page' : topicUrl ? 'rules page' : 'core rules page';
   const system = `You are a Kill Team 3rd Edition rules expert. You have been given rules text fetched directly from the Wahapedia ${sourceLabel} to answer this question accurately.
