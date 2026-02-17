@@ -50,11 +50,47 @@ const FACTION_URLS = {
   'blood angels':            'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
   'compurgation':            'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
   'sisters of battle':       'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'ork':                     'https://wahapedia.ru/kill-team3/kill-teams/kommandos/',
-  'orks':                    'https://wahapedia.ru/kill-team3/kill-teams/kommandos/',
 };
 
 const CORE_RULES_URL = 'https://wahapedia.ru/kill-team3/the-rules/core-rules/';
+
+const TOPIC_URLS = {
+  'killzone':            'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'kill zone':           'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'mission':             'https://wahapedia.ru/kill-team3/the-rules/matched-play/',
+  'matched play':        'https://wahapedia.ru/kill-team3/the-rules/matched-play/',
+  'tac op':              'https://wahapedia.ru/kill-team3/the-rules/tac-ops/',
+  'tac ops':             'https://wahapedia.ru/kill-team3/the-rules/tac-ops/',
+  'universal equipment': 'https://wahapedia.ru/kill-team3/the-rules/universal-equipment/',
+  'appendix':            'https://wahapedia.ru/kill-team3/the-rules/appendix/',
+  'keyword':             'https://wahapedia.ru/kill-team3/the-rules/appendix/',
+  'keywords':            'https://wahapedia.ru/kill-team3/the-rules/appendix/',
+  'universal ploy':      'https://wahapedia.ru/kill-team3/the-rules/ploys/',
+  'universal ploys':     'https://wahapedia.ru/kill-team3/the-rules/ploys/',
+  'approved ops':        'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'approved op':         'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'approved ops 2025':   'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+};
+
+// Keywords to help find the right section in the page
+const SECTION_KEYWORDS = {
+  'firefight ploy':   ['firefight ploy', 'firefight ploys', 'FIREFIGHT PLOY'],
+  'strategic ploy':   ['strategic ploy', 'strategic ploys', 'STRATEGIC PLOY'],
+  'tactical ploy':    ['tactical ploy', 'tactical ploys', 'TACTICAL PLOY'],
+  'ploy':             ['firefight ploy', 'strategic ploy', 'PLOY'],
+  'equipment':        ['equipment', 'EQUIPMENT'],
+  'operative':        ['operative', 'OPERATIVE'],
+  'ability':          ['ability', 'abilities', 'ABILITY'],
+  'action':           ['action', 'ACTION'],
+};
+
+function detectTopicUrl(question) {
+  const q = question.toLowerCase();
+  for (const [key, url] of Object.entries(TOPIC_URLS)) {
+    if (q.includes(key)) return url;
+  }
+  return null;
+}
 
 function detectFactionUrl(question) {
   const q = question.toLowerCase();
@@ -64,40 +100,74 @@ function detectFactionUrl(question) {
   return null;
 }
 
+function detectSectionKeywords(question) {
+  const q = question.toLowerCase();
+  for (const [topic, keywords] of Object.entries(SECTION_KEYWORDS)) {
+    if (q.includes(topic)) return keywords;
+  }
+  return null;
+}
+
 function stripHtml(html) {
-  // Remove scripts, styles, nav, footer
   html = html.replace(/<script[\s\S]*?<\/script>/gi, '');
   html = html.replace(/<style[\s\S]*?<\/style>/gi, '');
   html = html.replace(/<nav[\s\S]*?<\/nav>/gi, '');
   html = html.replace(/<footer[\s\S]*?<\/footer>/gi, '');
   html = html.replace(/<header[\s\S]*?<\/header>/gi, '');
-  // Replace tags with spaces/newlines
   html = html.replace(/<br\s*\/?>/gi, '\n');
   html = html.replace(/<\/p>/gi, '\n');
   html = html.replace(/<\/div>/gi, '\n');
+  html = html.replace(/<\/li>/gi, '\n');
   html = html.replace(/<\/h[1-6]>/gi, '\n');
   html = html.replace(/<[^>]+>/g, ' ');
-  // Clean up whitespace
   html = html.replace(/&nbsp;/g, ' ');
   html = html.replace(/&amp;/g, '&');
   html = html.replace(/&lt;/g, '<');
   html = html.replace(/&gt;/g, '>');
   html = html.replace(/&quot;/g, '"');
+  html = html.replace(/&#39;/g, "'");
   html = html.replace(/[ \t]+/g, ' ');
   html = html.replace(/\n{3,}/g, '\n\n');
   return html.trim();
 }
 
-async function fetchRulesContext(url) {
+// Extract the most relevant section from the full page text
+function extractRelevantSection(fullText, sectionKeywords) {
+  if (!sectionKeywords) {
+    // No specific section — return a broad middle chunk that skips nav
+    const start = Math.min(2000, Math.floor(fullText.length * 0.1));
+    return fullText.slice(start, start + 8000);
+  }
+
+  // Find the earliest occurrence of any section keyword
+  let bestIndex = -1;
+  for (const kw of sectionKeywords) {
+    const idx = fullText.toLowerCase().indexOf(kw.toLowerCase());
+    if (idx !== -1 && (bestIndex === -1 || idx < bestIndex)) {
+      bestIndex = idx;
+    }
+  }
+
+  if (bestIndex === -1) {
+    // Keyword not found — return middle of document
+    const start = Math.min(2000, Math.floor(fullText.length * 0.1));
+    return fullText.slice(start, start + 8000);
+  }
+
+  // Return 500 chars before and 7500 chars after the found section
+  const start = Math.max(0, bestIndex - 500);
+  return fullText.slice(start, start + 8000);
+}
+
+async function fetchRulesContext(url, sectionKeywords) {
   try {
     const res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; KTCompanion/1.0)' },
     });
     if (!res.ok) return null;
     const html = await res.text();
-    const text = stripHtml(html);
-    // Limit to ~6000 chars to stay within token budget
-    return text.slice(0, 6000);
+    const fullText = stripHtml(html);
+    return extractRelevantSection(fullText, sectionKeywords);
   } catch {
     return null;
   }
@@ -110,7 +180,7 @@ exports.handler = async function(event) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'API key not configured. Add ANTHROPIC_API_KEY to Netlify environment variables.' }) };
+    return { statusCode: 500, body: JSON.stringify({ error: 'API key not configured.' }) };
   }
 
   let body;
@@ -125,26 +195,26 @@ exports.handler = async function(event) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Missing question' }) };
   }
 
-  // Fetch relevant rules from Wahapedia
   const factionUrl = detectFactionUrl(question);
-  const rulesUrl = factionUrl || CORE_RULES_URL;
-  const rulesContext = await fetchRulesContext(rulesUrl);
+  const topicUrl = detectTopicUrl(question);
+  const sectionKeywords = detectSectionKeywords(question);
+  const rulesUrl = factionUrl || topicUrl || CORE_RULES_URL;
+  const rulesContext = await fetchRulesContext(rulesUrl, sectionKeywords);
 
-  // Build system prompt with real rules context
-  const contextNote = factionUrl
-    ? `The following is the actual rules text fetched from Wahapedia for the relevant faction:\n\n${rulesContext}`
-    : `The following is the actual core rules text fetched from Wahapedia:\n\n${rulesContext}`;
+  const sourceLabel = factionUrl ? 'faction page' : topicUrl ? 'rules page' : 'core rules page';
+  const system = `You are a Kill Team 3rd Edition rules expert. You have been given rules text fetched directly from the Wahapedia ${sourceLabel} to answer this question accurately.
 
-  const system = `You are a Kill Team 3rd Edition rules expert. You have been given actual rules text fetched directly from Wahapedia to answer this question accurately.
+RULES TEXT FROM WAHAPEDIA:
+${rulesContext || 'Could not fetch rules — answer from training knowledge and flag any uncertainty.'}
 
-${rulesContext ? contextNote : 'Note: rules context could not be fetched — answer from your training knowledge and flag any uncertainty.'}
+END OF RULES TEXT
 
 Instructions:
-- Answer based on the rules text provided above, not from memory
-- Quote exact rule text when it matters
-- If the answer is not in the provided text, say so clearly rather than guessing
-- Keep answers concise: 3-6 sentences unless the rule requires more detail
-- Write in plain prose, no markdown formatting`;
+- Answer based on the rules text above, not from memory
+- Quote exact rule names and text when relevant
+- If the specific answer is not in the provided text, say so and suggest the user check Wahapedia directly
+- Keep answers concise unless the rule requires detail
+- Write in plain prose, no markdown`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -158,9 +228,7 @@ Instructions:
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 1024,
         system: system,
-        messages: [
-          { role: 'user', content: 'Kill Team 3rd Edition rules question: ' + question }
-        ],
+        messages: [{ role: 'user', content: 'Kill Team 3rd Edition rules question: ' + question }],
       }),
     });
 
@@ -170,11 +238,8 @@ Instructions:
     }
 
     let data;
-    try {
-      data = JSON.parse(rawText);
-    } catch(e) {
-      return { statusCode: 502, body: JSON.stringify({ error: 'Bad API response: ' + rawText.slice(0, 200) }) };
-    }
+    try { data = JSON.parse(rawText); }
+    catch(e) { return { statusCode: 502, body: JSON.stringify({ error: 'Bad API response: ' + rawText.slice(0, 200) }) }; }
 
     if (!response.ok) {
       return { statusCode: response.status, body: JSON.stringify({ error: data.error ? data.error.message : 'API error ' + response.status }) };
@@ -195,3 +260,4 @@ Instructions:
     return { statusCode: 500, body: JSON.stringify({ error: 'Function error: ' + err.message }) };
   }
 };
+
