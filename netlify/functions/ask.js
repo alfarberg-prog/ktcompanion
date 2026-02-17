@@ -57,7 +57,7 @@ const CORE_RULES_URL = 'https://wahapedia.ru/kill-team3/the-rules/core-rules/';
 // Maps known faction-specific equipment/ability/operative names to their faction URL
 const FACTION_ITEMS = {
   // ── VOID-DANCERS ──────────────────────────────────────────────────────
-  'shimmershield':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
+  'shimmershield':          'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
   'harlequins kiss':        'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
   "harlequin's kiss":       'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
   'fusion pistol':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
@@ -367,11 +367,11 @@ const FACTION_ITEMS = {
   'ardent blade':           'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
 };
 
-function detectFactionItemUrl(question) {
+function detectFactionItem(question) {
   const q = question.toLowerCase();
   const sorted = Object.entries(FACTION_ITEMS).sort((a, b) => b[0].length - a[0].length);
   for (const [item, url] of sorted) {
-    if (q.includes(item)) return url;
+    if (q.includes(item)) return { url, item };
   }
   return null;
 }
@@ -559,6 +559,30 @@ function detectTopicUrls(question) {
   return urls;
 }
 
+// Classify question complexity for model routing
+// Complex questions (rule interactions, edge cases) → Sonnet
+// Simple questions (stat lookups, factual) → Haiku
+function isComplexQuestion(question) {
+  const q = question.toLowerCase();
+  const complexPatterns = [
+    /\bcan\s+(i|you|my|we|a|an)\b/,
+    /\bdoes\b.*\b(work|interact|stack|combine|affect|apply|override|prevent|allow)\b/,
+    /\bwhat\s+happens\b/,
+    /\bif\s+(i|you|my|we|a|an)\b/,
+    /\b(allowed|legal|permitted|possible|able to)\b/,
+    /\b(during|while|after|before)\b.*\b(action|move|charge|shoot|fight|activation)\b/,
+    /\b(vs|versus|against|between|or)\b.*\b(rule|ability|interact)\b/,
+    /\b(both|two|multiple)\b.*\b(operatives?|enemies?|targets?|actions?)\b/,
+    /\b(interrupt|react|respond|counter|prevent|negate|override)\b/,
+    /\b(how|when|where)\b.*\b(interact|resolve|trigger|apply)\b/,
+    /\b(still|also|even if|despite|regardless)\b/,
+    /\b(simultaneously|at the same time|in addition)\b/,
+    /\bpast\b.*\benemy\b/,
+    /\bengage\b.*\bmultiple\b/,
+  ];
+  return complexPatterns.some(p => p.test(q));
+}
+
 function detectSectionKeywords(question) {
   const q = question.toLowerCase();
   const allKeywords = [];
@@ -691,6 +715,7 @@ exports.handler = async function(event) {
   const q = question.toLowerCase();
   const allFactionEntries = Object.entries(FACTION_URLS).sort((a,b) => b[0].length - a[0].length);
   const detectedFactionUrls = [];
+  const detectedItemNames = []; // Track matched item names for targeted extraction
   for (const [key, url] of allFactionEntries) {
     if (q.includes(key) && !detectedFactionUrls.includes(url)) {
       detectedFactionUrls.push(url);
@@ -699,8 +724,16 @@ exports.handler = async function(event) {
   }
   // Check faction items if we haven't found anything yet
   if (detectedFactionUrls.length === 0) {
-    const itemUrl = detectFactionItemUrl(question);
-    if (itemUrl) detectedFactionUrls.push(itemUrl);
+    const itemMatch = detectFactionItem(question);
+    if (itemMatch) {
+      detectedFactionUrls.push(itemMatch.url);
+      detectedItemNames.push(itemMatch.item);
+    }
+  }
+  // Also check faction items even when faction URL was found — we want the item name for extraction targeting
+  if (detectedItemNames.length === 0) {
+    const itemMatch = detectFactionItem(question);
+    if (itemMatch) detectedItemNames.push(itemMatch.item);
   }
   // 2. AI classification if still nothing found
   if (detectedFactionUrls.length === 0) {
@@ -709,8 +742,16 @@ exports.handler = async function(event) {
   }
 
   const topicUrls = detectTopicUrls(question);
-  const sectionKeywords = detectSectionKeywords(question);
+  let sectionKeywords = detectSectionKeywords(question);
+  // Add detected item names as section keywords so extraction targets the right part of the page
+  if (detectedItemNames.length > 0) {
+    const itemKeywords = detectedItemNames.flatMap(name => [name, name.charAt(0).toUpperCase() + name.slice(1)]);
+    sectionKeywords = sectionKeywords ? [...sectionKeywords, ...itemKeywords] : itemKeywords;
+  }
   const isListQuestion = /\b(?:list|complete list|every|each of the)\b/.test(question.toLowerCase());
+
+  // Determine question complexity for model routing
+  const isComplex = isComplexQuestion(question);
 
   // Always fetch core rules — disputes almost always involve core + faction rules
   // Also fetch terrain/killzones if relevant
@@ -736,14 +777,31 @@ ${rulesContext || 'Could not fetch rules — answer from training knowledge and 
 
 END OF RULES TEXT
 
+REASONING EXAMPLES — follow this rigorous approach:
+
+Example 1 — Read what a rule ACTUALLY prohibits, not what you assume it prohibits:
+Q: "If my operative enters control range of an enemy during a Charge, can it keep moving?"
+Rule says: "it cannot leave that operative's control range"
+CORRECT reasoning: The rule constrains WHERE the operative can be (must stay within range). It does NOT say "must stop moving." The operative can keep moving freely — including past and around the enemy — as long as it remains within control range throughout. A positional constraint is not a movement stop.
+WRONG reasoning: "Once you enter control range you must stop" — this adds a restriction the rule does not state.
+
+Example 2 — A rule that explicitly limits to one:
+Q: "Can my operative fight two enemies it is in control range of?"
+Rule says: "select one valid target within control range of the active operative"
+CORRECT reasoning: The word "one" explicitly limits you to a single target per Fight action. Even if multiple enemies are in range, you pick one.
+
+Example 3 — Absence of prohibition is permission:
+Q: "Can I use both a Strategic Ploy and a Firefight Ploy in the same turning point?"
+CORRECT reasoning: The rules define when each ploy type can be used but never state they are mutually exclusive. Since no rule prohibits using both, you can.
+
 Instructions:
 - Start your response with exactly "VERIFIED:" if your ruling is clearly supported by the rules text above
 - Start your response with exactly "UNVERIFIED:" if you are drawing on training knowledge because the answer is not in the provided text
 - When using UNVERIFIED: still give a full, definitive answer — never refuse or say you cannot answer
-- CRITICAL: Only apply restrictions and limitations that are EXPLICITLY stated in the rules. If a rule does not say you cannot do something, do not invent that restriction. Players can do anything the rules permit — absence of a prohibition is permission.
-- For dispute questions: identify which rules are in tension, quote the exact relevant rule text from above, then give a clear ruling on how they interact
-- For factual questions: lead with the direct answer, then quote the relevant rule text
-- If two faction rules interact, address both sides explicitly
+- CRITICAL: Only cite restrictions that are EXPLICITLY written in the rules. If a rule does not say "cannot", "must not", or "only", do not invent that restriction. Absence of a prohibition is permission.
+- CRITICAL: Read constraints precisely. "Cannot leave X range" means "must stay within X range" — it does NOT mean "must stop moving". Distinguish between constraints on POSITION and constraints on MOVEMENT.
+- For dispute questions: identify which rules are in tension, quote the exact relevant rule text, then give a clear ruling
+- For factual questions: lead with the direct answer, then cite the relevant rule
 - Be definitive — players need a ruling, not a discussion. Say "the ruling is" not "it depends"
 - Keep answers concise: 2-4 sentences for simple questions, up to 8 for complex interactions
 - Write in plain prose, no markdown, no bullet points`;
@@ -757,7 +815,7 @@ Instructions:
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: isComplex ? 'claude-sonnet-4-5-20250929' : 'claude-haiku-4-5-20251001',
         max_tokens: 2048,
         system: system,
         messages: [{ role: 'user', content: 'Kill Team 3rd Edition rules question: ' + question }],
@@ -801,5 +859,4 @@ Instructions:
     return { statusCode: 500, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Function error: ' + err.message }) };
   }
 };
-
 
