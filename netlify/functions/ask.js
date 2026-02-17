@@ -605,6 +605,10 @@ function stripHtml(html) {
   html = html.replace(/<nav[\s\S]*?<\/nav>/gi, '');
   html = html.replace(/<footer[\s\S]*?<\/footer>/gi, '');
   html = html.replace(/<header[\s\S]*?<\/header>/gi, '');
+  // Strip Wahapedia sidebar, settings panels, and ad sections
+  html = html.replace(/<aside[\s\S]*?<\/aside>/gi, '');
+  html = html.replace(/<div[^>]*class="[^"]*(?:sidebar|side-nav|menu|modal|popup|ad-)[^"]*"[\s\S]*?<\/div>/gi, '');
+  html = html.replace(/<img[^>]*>/gi, ''); // Strip all images
   html = html.replace(/<br\s*\/?>/gi, '\n');
   html = html.replace(/<\/p>/gi, '\n');
   html = html.replace(/<\/div>/gi, '\n');
@@ -684,6 +688,33 @@ async function fetchRulesContext(url, sectionKeywords, largeContext) {
   } catch {
     return null;
   }
+}
+
+// Targeted extraction: find a specific item deep in a page
+// Used when the main extraction missed the item we know should be there
+function extractAroundItem(fullText, itemName, windowSize) {
+  const lowerText = fullText.toLowerCase();
+  const lowerItem = itemName.toLowerCase();
+  // Find ALL occurrences and pick the one most likely to be the rule definition
+  // (longer surrounding context = more likely to be the actual rule, not a ToC mention)
+  let bestIdx = -1;
+  let bestScore = 0;
+  let searchFrom = 0;
+  while (searchFrom < lowerText.length) {
+    const idx = lowerText.indexOf(lowerItem, searchFrom);
+    if (idx === -1) break;
+    // Score: prefer matches with more text after them on the same "line" (rule definitions are longer)
+    const lineEnd = lowerText.indexOf('\n', idx);
+    const lineLen = lineEnd === -1 ? lowerText.length - idx : lineEnd - idx;
+    if (lineLen > bestScore) {
+      bestScore = lineLen;
+      bestIdx = idx;
+    }
+    searchFrom = idx + lowerItem.length;
+  }
+  if (bestIdx === -1) return null;
+  const start = Math.max(0, bestIdx - 500);
+  return fullText.slice(start, start + windowSize);
 }
 
 exports.handler = async function(event) {
@@ -767,7 +798,28 @@ exports.handler = async function(event) {
   const fetchedTexts = await Promise.all(
     [...fetchUrls].map(url => fetchRulesContext(url, sectionKeywords, isListQuestion))
   );
-  const rulesContext = fetchedTexts.filter(Boolean).join('\n\n---\n\n');
+  let rulesContext = fetchedTexts.filter(Boolean).join('\n\n---\n\n');
+
+  // Verify: if we detected specific items, check the extracted text contains them
+  // If not, do a targeted extraction from the cached full page text
+  if (detectedItemNames.length > 0) {
+    const contextLower = rulesContext.toLowerCase();
+    for (const itemName of detectedItemNames) {
+      if (!contextLower.includes(itemName.toLowerCase())) {
+        // Item not found in extracted context — search cached pages for a targeted window
+        for (const url of detectedFactionUrls) {
+          const cached = pageCache.get(url);
+          if (cached) {
+            const targeted = extractAroundItem(cached.text, itemName, 8000);
+            if (targeted) {
+              rulesContext += '\n\n---\nTARGETED EXTRACTION for ' + itemName + ':\n' + targeted;
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
 
   const sourceLabel = detectedFactionUrls.length > 0 ? 'faction and core rules pages' : topicUrls.length > 0 ? 'rules page and core rules' : 'core rules page';
   const system = `You are a Kill Team 3rd Edition rules referee. Players come to you mid-game to resolve rules disputes and answer rules questions. You give clear, definitive rulings.
@@ -859,4 +911,3 @@ Instructions:
     return { statusCode: 500, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Function error: ' + err.message }) };
   }
 };
-
