@@ -68,7 +68,6 @@ const FACTION_ITEMS = {
   'veil of tears':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
   'cegorach':               'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
   'motley':                 'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-
   'shadowseer':             'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
   'death jester':           'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
 
@@ -168,7 +167,6 @@ const FACTION_ITEMS = {
   'krieg':                  'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
   'demo charge':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
 
-
   // ── IMPERIAL NAVY BREACHERS ───────────────────────────────────────────
   'void sergeant':          'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
   'navis':                  'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
@@ -178,7 +176,6 @@ const FACTION_ITEMS = {
   'breachers':              'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
   'gheistskull':            'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
   'armsman':                'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-
 
   // ── EXACTION SQUAD ────────────────────────────────────────────────────
   'vigilant':               'https://wahapedia.ru/kill-team3/kill-teams/exaction-squad/',
@@ -230,13 +227,12 @@ const FACTION_ITEMS = {
   'volley gun':             'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
   'taurox':                 'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
 
-
   // ── INTERCESSION SQUAD ────────────────────────────────────────────────
   'bolt carbine':           'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'auto bolt rifle':        'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'aggressor':              'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'intercessor':            'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'infiltrator':            'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
+  'infiltrator comms':      'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'incursor sergeant':      'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'eliminator':             'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
   'las fusil':              'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
@@ -257,7 +253,7 @@ const FACTION_ITEMS = {
   'skitarii vanguard':      'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
   'sicarian':               'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
   'ruststalker':            'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
-  'infiltrators':           'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
+  'sicarian infiltrator':   'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
   'galvanic rifle':         'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
   'radium carbine':         'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
   'omnispex':               'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
@@ -278,7 +274,6 @@ const FACTION_ITEMS = {
   'four armed':             'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
 
   // ── LEGIONARY ─────────────────────────────────────────────────────────
-  'legionary':              'https://wahapedia.ru/kill-team3/kill-teams/legionary/',
   'aspiring champion':      'https://wahapedia.ru/kill-team3/kill-teams/legionary/',
   'icon bearer':            'https://wahapedia.ru/kill-team3/kill-teams/legionary/',
   'balefire acolyte':       'https://wahapedia.ru/kill-team3/kill-teams/legionary/',
@@ -307,7 +302,6 @@ const FACTION_ITEMS = {
   'magna-coil':             'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
 
   // ── PHOBOS STRIKE TEAM ────────────────────────────────────────────────
-  'phobos':                 'https://wahapedia.ru/kill-team3/kill-teams/phobos-strike-team/',
   'reiver':                 'https://wahapedia.ru/kill-team3/kill-teams/phobos-strike-team/',
   'incursor':               'https://wahapedia.ru/kill-team3/kill-teams/phobos-strike-team/',
   'suppressed bolt':        'https://wahapedia.ru/kill-team3/kill-teams/phobos-strike-team/',
@@ -315,7 +309,6 @@ const FACTION_ITEMS = {
   'mark of the imperium':   'https://wahapedia.ru/kill-team3/kill-teams/phobos-strike-team/',
 
   // ── KASRKIN ───────────────────────────────────────────────────────────
-  'kasrkin':                'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
   'scion of cadia':         'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
   'cadian':                 'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
   'hot-shot lasgun':        'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
@@ -358,7 +351,6 @@ const FACTION_ITEMS = {
   'inferno pistol':         'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
 
   // ── VESPID STINGWINGS ─────────────────────────────────────────────────
-  'vespid':                 'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
   'stingwing':              'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
   'strain leader':          'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
   'neutron carbine':        'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
@@ -407,16 +399,15 @@ async function detectFactionViaAI(question, apiKey) {
     const data = await res.json();
     const reply = (data.content[0]?.text || '').trim().toLowerCase();
     if (reply === 'none' || reply === '') return null;
-    // Find matching URL
+    // Find matching URL — only check if reply contains a known key, not the reverse
     for (const [key, url] of Object.entries(FACTION_URLS)) {
-      if (reply.includes(key) || key.includes(reply)) return url;
+      if (reply.includes(key)) return url;
     }
     return null;
   } catch {
     return null;
   }
 }
-
 
 const TOPIC_URLS = {
   'killzone':            'https://wahapedia.ru/kill-team3/the-rules/killzones/',
@@ -553,21 +544,31 @@ const SECTION_KEYWORDS = {
   'tac op':             ['Tac Op', 'TAC OP'],
 };
 
-function detectTopicUrl(question) {
+function detectTopicUrls(question) {
   const q = question.toLowerCase();
   // Sort by key length descending so more specific matches win
   const sorted = Object.entries(TOPIC_URLS).sort((a, b) => b[0].length - a[0].length);
+  const urls = [];
   for (const [key, url] of sorted) {
-    if (q.includes(key)) return url;
+    if (q.includes(key) && !urls.includes(url)) {
+      urls.push(url);
+    }
   }
-  return null;
+  return urls;
 }
 
 function detectSectionKeywords(question) {
   const q = question.toLowerCase();
   const allKeywords = [];
+  // Short keywords that cause false substring matches need word-boundary checks
+  const WORD_BOUNDARY_KEYS = new Set(['ap', 'fly', 'dash', 'save', 'heavy', 'blast']);
   for (const [topic, keywords] of Object.entries(SECTION_KEYWORDS)) {
-    if (q.includes(topic)) allKeywords.push(...keywords);
+    if (WORD_BOUNDARY_KEYS.has(topic)) {
+      const regex = new RegExp(`\\b${topic}\\b`, 'i');
+      if (regex.test(q)) allKeywords.push(...keywords);
+    } else {
+      if (q.includes(topic)) allKeywords.push(...keywords);
+    }
   }
   return allKeywords.length > 0 ? [...new Set(allKeywords)] : null;
 }
@@ -647,24 +648,27 @@ async function fetchRulesContext(url, sectionKeywords, largeContext) {
 
 exports.handler = async function(event) {
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
+    return { statusCode: 405, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'API key not configured.' }) };
+    return { statusCode: 500, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'API key not configured.' }) };
   }
 
   let body;
   try {
     body = JSON.parse(event.body);
   } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid request' }) };
+    return { statusCode: 400, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Invalid request' }) };
   }
 
   const { question } = body;
   if (!question) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing question' }) };
+    return { statusCode: 400, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Missing question' }) };
+  }
+  if (question.length > 500) {
+    return { statusCode: 400, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Question too long (max 500 characters)' }) };
   }
 
   // 1. Fast keyword detection — find up to two factions
@@ -688,9 +692,9 @@ exports.handler = async function(event) {
     if (aiUrl) detectedFactionUrls.push(aiUrl);
   }
 
-  const topicUrl = detectTopicUrl(question);
+  const topicUrls = detectTopicUrls(question);
   const sectionKeywords = detectSectionKeywords(question);
-  const isListQuestion = /list|all|every|each|complete/.test(question.toLowerCase());
+  const isListQuestion = /\b(?:list|complete list|every|each of the)\b/.test(question.toLowerCase());
 
   // Always fetch core rules — disputes almost always involve core + faction rules
   // Also fetch terrain/killzones if relevant
@@ -699,7 +703,7 @@ exports.handler = async function(event) {
 
   const fetchUrls = new Set([CORE_RULES_URL]);
   detectedFactionUrls.forEach(u => fetchUrls.add(u));
-  if (topicUrl) fetchUrls.add(topicUrl);
+  topicUrls.forEach(u => fetchUrls.add(u));
   if (isTerrainQ) fetchUrls.add('https://wahapedia.ru/kill-team3/the-rules/killzones/');
 
   // Fetch all relevant pages in parallel
@@ -708,7 +712,7 @@ exports.handler = async function(event) {
   );
   const rulesContext = fetchedTexts.filter(Boolean).join('\n\n---\n\n');
 
-  const sourceLabel = detectedFactionUrls.length > 0 ? 'faction and core rules pages' : topicUrl ? 'rules page and core rules' : 'core rules page';
+  const sourceLabel = detectedFactionUrls.length > 0 ? 'faction and core rules pages' : topicUrls.length > 0 ? 'rules page and core rules' : 'core rules page';
   const system = `You are a Kill Team 3rd Edition rules referee. Players come to you mid-game to resolve rules disputes and answer rules questions. You give clear, definitive rulings.
 
 RULES TEXT FROM WAHAPEDIA (${sourceLabel}):
@@ -745,15 +749,15 @@ Instructions:
 
     const rawText = await response.text();
     if (!rawText || rawText.trim() === '') {
-      return { statusCode: 502, body: JSON.stringify({ error: 'Empty response from Anthropic' }) };
+      return { statusCode: 502, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Empty response from Anthropic' }) };
     }
 
     let data;
     try { data = JSON.parse(rawText); }
-    catch(e) { return { statusCode: 502, body: JSON.stringify({ error: 'Bad API response: ' + rawText.slice(0, 200) }) }; }
+    catch(e) { return { statusCode: 502, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Bad API response: ' + rawText.slice(0, 200) }) }; }
 
     if (!response.ok) {
-      return { statusCode: response.status, body: JSON.stringify({ error: data.error ? data.error.message : 'API error ' + response.status }) };
+      return { statusCode: response.status, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: data.error ? data.error.message : 'API error ' + response.status }) };
     }
 
     let answer = '';
@@ -777,7 +781,8 @@ Instructions:
     };
 
   } catch (err) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Function error: ' + err.message }) };
+    return { statusCode: 500, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Function error: ' + err.message }) };
   }
 };
+
 
