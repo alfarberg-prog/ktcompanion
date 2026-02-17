@@ -441,14 +441,14 @@ const SECTION_KEYWORDS = {
   'tactical ploy':      ['Tactical Ploy', 'TACTICAL PLOY'],
   'ploy':               ['Firefight Ploy', 'Strategic Ploy', 'PLOY'],
 
-  // Actions
-  'normal move':        ['Normal Move', 'NORMAL MOVE'],
-  'dash':               ['Dash', 'DASH'],
-  'fall back':          ['Fall Back', 'FALL BACK'],
-  'charge':             ['Charge', 'CHARGE'],
-  'shoot':              ['Shoot', 'SHOOT'],
-  'fight':              ['Fight', 'FIGHT'],
-  'overwatch':          ['Overwatch', 'OVERWATCH'],
+  // Actions — include specific phrases from the actual rules sections
+  'normal move':        ['Normal Move', 'NORMAL MOVE', 'Normal Move action', 'make a Normal Move'],
+  'dash':               ['Dash', 'DASH', 'Dash action', 'make a Dash move'],
+  'fall back':          ['Fall Back', 'FALL BACK', 'Fall Back action', 'make a Fall Back move'],
+  'charge':             ['Charge action', 'CHARGE', 'make a Charge move', 'Charge move', 'within Engagement Range'],
+  'shoot':              ['Shoot action', 'SHOOT', 'make a shooting attack'],
+  'fight':              ['Fight action', 'FIGHT', 'make a combat attack', 'resolve combat'],
+  'overwatch':          ['Overwatch', 'OVERWATCH', 'Overwatch action'],
   'pick up':            ['Pick Up', 'PICK UP'],
   'action':             ['Action', 'ACTION'],
 
@@ -470,6 +470,8 @@ const SECTION_KEYWORDS = {
   'visibility':         ['Visible', 'Visibility', 'VISIBLE'],
   'coherency':          ['Coherency', 'COHERENCY'],
   'within range':       ['within range', 'Within Range'],
+  'engagement range':   ['Engagement Range', 'ENGAGEMENT RANGE', 'Engagement Range of an enemy'],
+  'control range':      ['Control Range', 'CONTROL RANGE', 'within control range'],
   'terrain':            ['Terrain', 'TERRAIN'],
   'barricade':          ['Barricade', 'BARRICADE'],
   'door':               ['Door', 'DOOR'],
@@ -597,6 +599,7 @@ function stripHtml(html) {
 }
 
 // Extract the most relevant section from the full page text
+// Finds keyword matches but skips early ones (likely table of contents) when later matches exist
 function extractRelevantSection(fullText, sectionKeywords, largeContext) {
   const windowSize = largeContext ? 20000 : 12000;
 
@@ -604,17 +607,30 @@ function extractRelevantSection(fullText, sectionKeywords, largeContext) {
     return fullText.slice(0, windowSize);
   }
 
-  let bestIndex = -1;
+  // Find ALL occurrences of each keyword
+  const allMatches = [];
+  const lowerText = fullText.toLowerCase();
   for (const kw of sectionKeywords) {
-    const idx = fullText.toLowerCase().indexOf(kw.toLowerCase());
-    if (idx !== -1 && (bestIndex === -1 || idx < bestIndex)) {
-      bestIndex = idx;
+    const lowerKw = kw.toLowerCase();
+    let searchFrom = 0;
+    while (searchFrom < lowerText.length) {
+      const idx = lowerText.indexOf(lowerKw, searchFrom);
+      if (idx === -1) break;
+      allMatches.push(idx);
+      searchFrom = idx + lowerKw.length;
     }
   }
 
-  if (bestIndex === -1) {
+  if (allMatches.length === 0) {
     return fullText.slice(0, windowSize);
   }
+
+  allMatches.sort((a, b) => a - b);
+
+  // Skip matches in the first 10% of the document (likely ToC/overview) if later matches exist
+  const tocThreshold = Math.min(3000, Math.floor(fullText.length * 0.1));
+  const deepMatches = allMatches.filter(idx => idx > tocThreshold);
+  const bestIndex = deepMatches.length > 0 ? deepMatches[0] : allMatches[0];
 
   const start = Math.max(0, bestIndex - 500);
   return fullText.slice(start, start + windowSize);
@@ -724,6 +740,7 @@ Instructions:
 - Start your response with exactly "VERIFIED:" if your ruling is clearly supported by the rules text above
 - Start your response with exactly "UNVERIFIED:" if you are drawing on training knowledge because the answer is not in the provided text
 - When using UNVERIFIED: still give a full, definitive answer — never refuse or say you cannot answer
+- CRITICAL: Only apply restrictions and limitations that are EXPLICITLY stated in the rules. If a rule does not say you cannot do something, do not invent that restriction. Players can do anything the rules permit — absence of a prohibition is permission.
 - For dispute questions: identify which rules are in tension, quote the exact relevant rule text from above, then give a clear ruling on how they interact
 - For factual questions: lead with the direct answer, then quote the relevant rule text
 - If two faction rules interact, address both sides explicitly
