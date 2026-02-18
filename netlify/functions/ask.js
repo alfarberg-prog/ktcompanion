@@ -406,6 +406,10 @@ const TOPIC_URLS = {
   'heavy terrain':       'https://wahapedia.ru/kill-team3/the-rules/killzones/',
   'traversable':         'https://wahapedia.ru/kill-team3/the-rules/killzones/',
   'barricade':           'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'cover':               'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'obscuring':           'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'line of sight':       'https://wahapedia.ru/kill-team3/the-rules/killzones/',
+  'climb':               'https://wahapedia.ru/kill-team3/the-rules/killzones/',
 };
 
 // Keywords to help find the right section in the page
@@ -621,7 +625,7 @@ function stripHtml(html) {
 // Extract the most relevant section from the full page text
 // Finds keyword matches but skips early ones (likely table of contents) when later matches exist
 function extractRelevantSection(fullText, sectionKeywords, largeContext) {
-  const windowSize = largeContext ? 40000 : 24000;
+  const windowSize = largeContext ? 24000 : 16000;
 
   if (!sectionKeywords) {
     return fullText.slice(0, windowSize);
@@ -776,55 +780,61 @@ exports.handler = async function(event) {
   // Always use Sonnet for best rule interpretation accuracy
   // Cost is trivial at expected usage (~$8 per 100 requests)
 
-  // Always fetch core rules + appendix — disputes involve core rules, and weapon/keyword
-  // definitions live in the appendix. This covers the vast majority of general questions.
-  const terrainTopics = ['vantage', 'terrain', 'barricade', 'traversable'];
+  // Always fetch core rules + appendix — these are the universal rules that apply to every game.
+  // Faction pages are secondary — nice for specific lookups but not the priority.
+  // Killzones (terrain, cover, vantage) are high priority — among the most common disputes.
+  const terrainTopics = [
+    'vantage', 'terrain', 'barricade', 'traversable', 'cover', 'obscur',
+    'conceal', 'line of sight', 'los', 'heavy feature', 'light feature',
+    'dense', 'climb', 'drop', 'obstacle', 'wall', 'ruin',
+  ];
   const isTerrainQ = terrainTopics.some(t => q.includes(t));
 
-  const fetchUrls = new Set([CORE_RULES_URL, APPENDIX_URL]);
-  detectedFactionUrls.forEach(u => fetchUrls.add(u));
-  topicUrls.forEach(u => fetchUrls.add(u));
-  if (isTerrainQ) fetchUrls.add('https://wahapedia.ru/kill-team3/the-rules/killzones/');
+  // Token budget for Tier 1 (30K input tokens/min):
+  //   System prompt + few-shots:        ~2K tokens
+  //   Core rules (FULL page, priority):  ~10K tokens
+  //   Appendix (extraction + fallback):  ~4K tokens
+  //   Killzones/topic (if relevant):     ~4K tokens
+  //   Faction (targeted extraction):     ~4K tokens
+  //   Total typical:                     ~16-24K tokens (safely under 30K)
+  const FULL_PAGE_LIMIT = 40000;  // ~10K tokens — for core rules (highest priority)
 
-  // Fetch all relevant pages in parallel
-  // For single-faction questions, send the FULL faction page to avoid extraction misses
-  const MAX_FULL_PAGE_CHARS = 80000; // ~20K tokens — well within Sonnet's context
-  const sendFullFaction = detectedFactionUrls.length === 1;
-
-  const fetchedTexts = await Promise.all(
-    [...fetchUrls].map(async (url) => {
-      // For the single detected faction, try to send the full page
-      if (sendFullFaction && detectedFactionUrls.includes(url)) {
-        try {
-          const now = Date.now();
-          let fullText;
-          const cached = pageCache.get(url);
-          if (cached && (now - cached.ts) < CACHE_TTL_MS) {
-            fullText = cached.text;
-          } else {
-            const res = await fetch(url, {
-              headers: { 'User-Agent': 'Mozilla/5.0 (compatible; KTCompanion/1.0)' },
-            });
-            if (!res.ok) return null;
-            const html = await res.text();
-            fullText = stripHtml(html);
-            pageCache.set(url, { text: fullText, ts: now });
-          }
-          // If the stripped page fits, send it all — no extraction, no missed sections
-          if (fullText.length <= MAX_FULL_PAGE_CHARS) {
-            return fullText;
-          }
-          // Page too large — fall back to extraction with doubled window
-          return extractRelevantSection(fullText, sectionKeywords, true);
-        } catch {
-          return null;
-        }
+  // ── Step 1: Fetch core rules as FULL PAGE (top priority) ──
+  let coreRulesText = '';
+  try {
+    const now = Date.now();
+    let fullText;
+    const cached = pageCache.get(CORE_RULES_URL);
+    if (cached && (now - cached.ts) < CACHE_TTL_MS) {
+      fullText = cached.text;
+    } else {
+      const res = await fetch(CORE_RULES_URL, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; KTCompanion/1.0)' },
+      });
+      if (res.ok) {
+        const html = await res.text();
+        fullText = stripHtml(html);
+        pageCache.set(CORE_RULES_URL, { text: fullText, ts: now });
       }
-      // All other pages: normal extraction
-      return fetchRulesContext(url, sectionKeywords, isListQuestion);
-    })
+    }
+    if (fullText) {
+      coreRulesText = fullText.length <= FULL_PAGE_LIMIT
+        ? fullText
+        : extractRelevantSection(fullText, sectionKeywords, isListQuestion);
+    }
+  } catch { /* continue without core rules */ }
+
+  // ── Step 2: Fetch appendix, terrain, topics, factions — all with extraction (parallel) ──
+  const extractionUrls = [APPENDIX_URL];
+  if (isTerrainQ) extractionUrls.push('https://wahapedia.ru/kill-team3/the-rules/killzones/');
+  topicUrls.forEach(u => { if (!extractionUrls.includes(u) && u !== CORE_RULES_URL) extractionUrls.push(u); });
+  detectedFactionUrls.forEach(u => extractionUrls.push(u));
+
+  const extractedTexts = await Promise.all(
+    extractionUrls.map(url => fetchRulesContext(url, sectionKeywords, isListQuestion))
   );
-  let rulesContext = fetchedTexts.filter(Boolean).join('\n\n---\n\n');
+
+  let rulesContext = [coreRulesText, ...extractedTexts].filter(Boolean).join('\n\n---\n\n');
 
   // Verify: if we detected specific items, check the extracted text contains them
   // If not, do a targeted extraction from the cached full page text
@@ -835,7 +845,7 @@ exports.handler = async function(event) {
         for (const url of detectedFactionUrls) {
           const cached = pageCache.get(url);
           if (cached) {
-            const targeted = extractAroundItem(cached.text, itemName, 16000);
+            const targeted = extractAroundItem(cached.text, itemName, 10000);
             if (targeted) {
               rulesContext += '\n\n---\nTARGETED EXTRACTION for ' + itemName + ':\n' + targeted;
               break;
@@ -856,7 +866,7 @@ exports.handler = async function(event) {
       // Term not found — try targeted extraction from appendix
       const cachedAppendix = pageCache.get(APPENDIX_URL);
       if (cachedAppendix) {
-        const targeted = extractAroundItem(cachedAppendix.text, term, 12000);
+        const targeted = extractAroundItem(cachedAppendix.text, term, 8000);
         if (targeted) {
           rulesContext += '\n\n---\nTARGETED EXTRACTION for ' + term + ':\n' + targeted;
           found = true;
@@ -866,7 +876,7 @@ exports.handler = async function(event) {
       if (!found) {
         const cachedCore = pageCache.get(CORE_RULES_URL);
         if (cachedCore) {
-          const targeted = extractAroundItem(cachedCore.text, term, 12000);
+          const targeted = extractAroundItem(cachedCore.text, term, 8000);
           if (targeted) {
             rulesContext += '\n\n---\nTARGETED EXTRACTION for ' + term + ':\n' + targeted;
           }
