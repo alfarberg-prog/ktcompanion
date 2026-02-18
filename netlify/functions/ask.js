@@ -105,6 +105,7 @@ const FACTION_URLS = {
 };
 
 const CORE_RULES_URL = 'https://wahapedia.ru/kill-team3/the-rules/core-rules/';
+const APPENDIX_URL = 'https://wahapedia.ru/kill-team3/the-rules/appendix/';
 
 // Maps known faction-specific equipment/ability/operative names to their faction URL
 const FACTION_ITEMS = {
@@ -534,30 +535,46 @@ function detectTopicUrls(question) {
   return urls;
 }
 
-// Classify question complexity for model routing
-// Complex questions (rule interactions, edge cases) → Sonnet
-// Simple questions (stat lookups, factual) → Haiku
-function isComplexQuestion(question) {
-  const q = question.toLowerCase();
-  const complexPatterns = [
-    /\bcan\s+(i|you|my|we|a|an)\b/,
-    /\bdoes\b.*\b(work|interact|stack|combine|affect|apply|override|prevent|allow)\b/,
-    /\bwhat\s+happens\b/,
-    /\bif\s+(i|you|my|we|a|an)\b/,
-    /\b(allowed|legal|permitted|possible|able to)\b/,
-    /\b(during|while|after|before)\b.*\b(action|move|charge|shoot|fight|activation)\b/,
-    /\b(vs|versus|against|between|or)\b.*\b(rule|ability|interact)\b/,
-    /\b(both|two|multiple)\b.*\b(operatives?|enemies?|targets?|actions?)\b/,
-    /\b(interrupt|react|respond|counter|prevent|negate|override)\b/,
-    /\b(how|when|where)\b.*\b(interact|resolve|trigger|apply)\b/,
-    /\b(still|also|even if|despite|regardless)\b/,
-    /\b(simultaneously|at the same time|in addition)\b/,
-    /\bpast\b.*\benemy\b/,
-    /\bengage\b.*\bmultiple\b/,
-  ];
-  return complexPatterns.some(p => p.test(q));
+// Extract likely game terms from a question for appendix/core rules lookup
+// Returns terms that aren't common English words — these are probably game keywords
+function extractSubjectTerms(question) {
+  const stopWords = new Set([
+    'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+    'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
+    'should', 'may', 'might', 'shall', 'can', 'need', 'dare', 'ought',
+    'used', 'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by', 'from',
+    'as', 'into', 'through', 'during', 'before', 'after', 'above', 'below',
+    'between', 'out', 'off', 'over', 'under', 'again', 'further', 'then',
+    'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'each',
+    'every', 'both', 'few', 'more', 'most', 'other', 'some', 'such', 'no',
+    'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very',
+    'just', 'because', 'but', 'and', 'or', 'if', 'while', 'that', 'this',
+    'what', 'which', 'who', 'whom', 'whose', 'it', 'its', 'my', 'your',
+    'his', 'her', 'our', 'their', 'me', 'him', 'them', 'we', 'you', 'i',
+    'about', 'up', 'also', 'work', 'works', 'rule', 'rules', 'mean',
+    'means', 'like', 'get', 'gets', 'use', 'using', 'happen', 'happens',
+    'affect', 'does', 'exactly', 'tell', 'explain', 'apply', 'applies',
+    'during', 'against', 'another', 'any', 'still', 'even',
+  ]);
+  const words = question.toLowerCase().replace(/[?.,!;:'"()]/g, '').split(/\s+/);
+  const terms = [];
+  // Check multi-word phrases first (2-word combinations)
+  for (let i = 0; i < words.length - 1; i++) {
+    const bigram = words[i] + ' ' + words[i + 1];
+    if (!stopWords.has(words[i]) && !stopWords.has(words[i + 1]) && bigram.length > 5) {
+      terms.push(bigram);
+    }
+  }
+  // Then single words
+  for (const w of words) {
+    if (w.length > 3 && !stopWords.has(w)) {
+      terms.push(w);
+    }
+  }
+  return terms;
 }
 
+// Detect which section keywords are relevant to the question
 function detectSectionKeywords(question) {
   const q = question.toLowerCase();
   const allKeywords = [];
@@ -604,7 +621,7 @@ function stripHtml(html) {
 // Extract the most relevant section from the full page text
 // Finds keyword matches but skips early ones (likely table of contents) when later matches exist
 function extractRelevantSection(fullText, sectionKeywords, largeContext) {
-  const windowSize = largeContext ? 20000 : 12000;
+  const windowSize = largeContext ? 40000 : 24000;
 
   if (!sectionKeywords) {
     return fullText.slice(0, windowSize);
@@ -756,22 +773,56 @@ exports.handler = async function(event) {
   }
   const isListQuestion = /\b(?:list|complete list|every|each of the)\b/.test(question.toLowerCase());
 
-  // Determine question complexity for model routing
-  const isComplex = isComplexQuestion(question);
+  // Always use Sonnet for best rule interpretation accuracy
+  // Cost is trivial at expected usage (~$8 per 100 requests)
 
-  // Always fetch core rules — disputes almost always involve core + faction rules
-  // Also fetch terrain/killzones if relevant
+  // Always fetch core rules + appendix — disputes involve core rules, and weapon/keyword
+  // definitions live in the appendix. This covers the vast majority of general questions.
   const terrainTopics = ['vantage', 'terrain', 'barricade', 'traversable'];
   const isTerrainQ = terrainTopics.some(t => q.includes(t));
 
-  const fetchUrls = new Set([CORE_RULES_URL]);
+  const fetchUrls = new Set([CORE_RULES_URL, APPENDIX_URL]);
   detectedFactionUrls.forEach(u => fetchUrls.add(u));
   topicUrls.forEach(u => fetchUrls.add(u));
   if (isTerrainQ) fetchUrls.add('https://wahapedia.ru/kill-team3/the-rules/killzones/');
 
   // Fetch all relevant pages in parallel
+  // For single-faction questions, send the FULL faction page to avoid extraction misses
+  const MAX_FULL_PAGE_CHARS = 80000; // ~20K tokens — well within Sonnet's context
+  const sendFullFaction = detectedFactionUrls.length === 1;
+
   const fetchedTexts = await Promise.all(
-    [...fetchUrls].map(url => fetchRulesContext(url, sectionKeywords, isListQuestion))
+    [...fetchUrls].map(async (url) => {
+      // For the single detected faction, try to send the full page
+      if (sendFullFaction && detectedFactionUrls.includes(url)) {
+        try {
+          const now = Date.now();
+          let fullText;
+          const cached = pageCache.get(url);
+          if (cached && (now - cached.ts) < CACHE_TTL_MS) {
+            fullText = cached.text;
+          } else {
+            const res = await fetch(url, {
+              headers: { 'User-Agent': 'Mozilla/5.0 (compatible; KTCompanion/1.0)' },
+            });
+            if (!res.ok) return null;
+            const html = await res.text();
+            fullText = stripHtml(html);
+            pageCache.set(url, { text: fullText, ts: now });
+          }
+          // If the stripped page fits, send it all — no extraction, no missed sections
+          if (fullText.length <= MAX_FULL_PAGE_CHARS) {
+            return fullText;
+          }
+          // Page too large — fall back to extraction with doubled window
+          return extractRelevantSection(fullText, sectionKeywords, true);
+        } catch {
+          return null;
+        }
+      }
+      // All other pages: normal extraction
+      return fetchRulesContext(url, sectionKeywords, isListQuestion);
+    })
   );
   let rulesContext = fetchedTexts.filter(Boolean).join('\n\n---\n\n');
 
@@ -781,11 +832,10 @@ exports.handler = async function(event) {
     const contextLower = rulesContext.toLowerCase();
     for (const itemName of detectedItemNames) {
       if (!contextLower.includes(itemName.toLowerCase())) {
-        // Item not found in extracted context — search cached pages for a targeted window
         for (const url of detectedFactionUrls) {
           const cached = pageCache.get(url);
           if (cached) {
-            const targeted = extractAroundItem(cached.text, itemName, 8000);
+            const targeted = extractAroundItem(cached.text, itemName, 16000);
             if (targeted) {
               rulesContext += '\n\n---\nTARGETED EXTRACTION for ' + itemName + ':\n' + targeted;
               break;
@@ -796,7 +846,36 @@ exports.handler = async function(event) {
     }
   }
 
-  const sourceLabel = detectedFactionUrls.length > 0 ? 'faction and core rules pages' : topicUrls.length > 0 ? 'rules page and core rules' : 'core rules page';
+  // Also check: extract key subject terms from the question and verify they appear in context
+  // This catches game terms defined in the Appendix (weapon rules, keywords, etc.)
+  const subjectTerms = extractSubjectTerms(question);
+  const contextLower = rulesContext.toLowerCase();
+  for (const term of subjectTerms) {
+    if (!contextLower.includes(term.toLowerCase())) {
+      let found = false;
+      // Term not found — try targeted extraction from appendix
+      const cachedAppendix = pageCache.get(APPENDIX_URL);
+      if (cachedAppendix) {
+        const targeted = extractAroundItem(cachedAppendix.text, term, 12000);
+        if (targeted) {
+          rulesContext += '\n\n---\nTARGETED EXTRACTION for ' + term + ':\n' + targeted;
+          found = true;
+        }
+      }
+      // Also try core rules if not found in appendix
+      if (!found) {
+        const cachedCore = pageCache.get(CORE_RULES_URL);
+        if (cachedCore) {
+          const targeted = extractAroundItem(cachedCore.text, term, 12000);
+          if (targeted) {
+            rulesContext += '\n\n---\nTARGETED EXTRACTION for ' + term + ':\n' + targeted;
+          }
+        }
+      }
+    }
+  }
+
+  const sourceLabel = detectedFactionUrls.length > 0 ? 'faction rules, core rules, and appendix' : topicUrls.length > 0 ? 'rules page, core rules, and appendix' : 'core rules and appendix';
   const system = `You are a Kill Team 3rd Edition rules referee. Players come to you mid-game to resolve rules disputes and answer rules questions. You give clear, definitive rulings.
 
 RULES TEXT FROM WAHAPEDIA (${sourceLabel}):
@@ -842,7 +921,7 @@ Instructions:
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: isComplex ? 'claude-sonnet-4-5-20250929' : 'claude-haiku-4-5-20251001',
+        model: 'claude-sonnet-4-5-20250929',
         max_tokens: 2048,
         system: system,
         messages: [{ role: 'user', content: 'Kill Team 3rd Edition rules question: ' + question }],
