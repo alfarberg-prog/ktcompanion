@@ -1,55 +1,107 @@
 const FACTION_URLS = {
-  'blades of khaine':        'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
-  'void-dancers':            'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'void dancers':            'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'harlequins':              'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'kommandos':               'https://wahapedia.ru/kill-team3/kill-teams/kommandos/',
-  'pathfinders':             'https://wahapedia.ru/kill-team3/kill-teams/pathfinders/',
+  // ── IMPERIUM: ADEPTA SORORITAS ───────────────────────────────────────
+  'celestian insidiants':    'https://wahapedia.ru/kill-team3/kill-teams/celestian-insidiants/',
+  'celestian':               'https://wahapedia.ru/kill-team3/kill-teams/celestian-insidiants/',
   'novitiates':              'https://wahapedia.ru/kill-team3/kill-teams/novitiates/',
-  'corsair voidscarred':     'https://wahapedia.ru/kill-team3/kill-teams/corsair-voidscarred/',
-  'voidscarred':             'https://wahapedia.ru/kill-team3/kill-teams/corsair-voidscarred/',
-  'hearthkyn salvagers':     'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'hearthkyn':               'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'hand of the archon':      'https://wahapedia.ru/kill-team3/kill-teams/hand-of-the-archon/',
-  'death korps':             'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
-  'death korps of krieg':    'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
-  'imperial navy breachers': 'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'navy breachers':          'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'exaction squad':          'https://wahapedia.ru/kill-team3/kill-teams/exaction-squad/',
-  'farstalker kinband':      'https://wahapedia.ru/kill-team3/kill-teams/farstalker-kinband/',
-  'farstalkers':             'https://wahapedia.ru/kill-team3/kill-teams/farstalker-kinband/',
-  'hierotek circle':         'https://wahapedia.ru/kill-team3/kill-teams/hierotek-circle/',
-  'fellgor ravagers':        'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-  'fellgor':                 'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-  'tempestus aquilons':      'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'aquilons':                'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'intercession squad':      'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'intercession':            'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'vespid stingwings':       'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
-  'vespid':                  'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
-  'veteran guardsmen':       'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-  'guardsmen':               'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
+
+  // ── IMPERIUM: ADEPTUS MECHANICUS ─────────────────────────────────────
+  'battleclade':             'https://wahapedia.ru/kill-team3/kill-teams/battleclade/',
   'hunter clade':            'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
   'skitarii':                'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
-  'wyrmblade':               'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
-  'genestealer cults':       'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
-  'legionary':               'https://wahapedia.ru/kill-team3/kill-teams/legionary/',
-  'chaos space marines':     'https://wahapedia.ru/kill-team3/kill-teams/legionary/',
-  'warpcoven':               'https://wahapedia.ru/kill-team3/kill-teams/warpcoven/',
-  'thousand sons':           'https://wahapedia.ru/kill-team3/kill-teams/warpcoven/',
-  'hernkyn pioneers':        'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
-  'pioneers':                'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
+
+  // ── IMPERIUM: AGENTS ─────────────────────────────────────────────────
+  'elucidian starstrider':   'https://wahapedia.ru/kill-team3/kill-teams/elucidian-starstrider/',
+  'starstriders':            'https://wahapedia.ru/kill-team3/kill-teams/elucidian-starstrider/',
+  'exaction squad':          'https://wahapedia.ru/kill-team3/kill-teams/exaction-squad/',
+  'imperial navy breacher':  'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'navy breachers':          'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'navy breacher':           'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'inquisitorial agent':     'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
+  'inquisitorial agents':    'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
+  'inquisition':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
+  'sanctifiers':             'https://wahapedia.ru/kill-team3/kill-teams/sanctifiers/',
+
+  // ── IMPERIUM: ASTRA MILITARUM ────────────────────────────────────────
+  'death korps':             'https://wahapedia.ru/kill-team3/kill-teams/death-korps/',
+  'death korps of krieg':    'https://wahapedia.ru/kill-team3/kill-teams/death-korps/',
+  'kasrkin':                 'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
+  'ratlings':                'https://wahapedia.ru/kill-team3/kill-teams/ratlings/',
+  'tempestus aquilons':      'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
+  'aquilons':                'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
+
+  // ── IMPERIUM: SPACE MARINES ──────────────────────────────────────────
+  'angel of death':          'https://wahapedia.ru/kill-team3/kill-teams/angel-of-death/',
+  'angels of death':         'https://wahapedia.ru/kill-team3/kill-teams/angel-of-death/',
+  'deathwatch':              'https://wahapedia.ru/kill-team3/kill-teams/deathwatch/',
   'phobos strike team':      'https://wahapedia.ru/kill-team3/kill-teams/phobos-strike-team/',
   'phobos':                  'https://wahapedia.ru/kill-team3/kill-teams/phobos-strike-team/',
-  'kasrkin':                 'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
-  'talons of the emperor':   'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-  'talons':                  'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-  'grey knights':            'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'inquisitorial agents':    'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-  'inquisition':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-  'blood angels':            'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
-  'compurgation':            'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'sisters of battle':       'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
+  'scout squad':             'https://wahapedia.ru/kill-team3/kill-teams/scout-squad/',
+  'scouts':                  'https://wahapedia.ru/kill-team3/kill-teams/scout-squad/',
+  'wolf scouts':             'https://wahapedia.ru/kill-team3/kill-teams/wolf-scouts/',
+
+  // ── CHAOS: DAEMONS ──────────────────────────────────────────────────
+  'gellerpox infected':      'https://wahapedia.ru/kill-team3/kill-teams/gellerpox-infected/',
+  'gellerpox':               'https://wahapedia.ru/kill-team3/kill-teams/gellerpox-infected/',
+
+  // ── CHAOS: CHAOS SPACE MARINES ───────────────────────────────────────
+  'legionary':               'https://wahapedia.ru/kill-team3/kill-teams/legionary/',
+  'chaos space marines':     'https://wahapedia.ru/kill-team3/kill-teams/legionary/',
+  'murderwing':              'https://wahapedia.ru/kill-team3/kill-teams/murderwing/',
+  'nemesis claw':            'https://wahapedia.ru/kill-team3/kill-teams/nemesis-claw/',
+  'night lords':             'https://wahapedia.ru/kill-team3/kill-teams/nemesis-claw/',
+
+  // ── CHAOS: CULTISTS ─────────────────────────────────────────────────
+  'blooded':                 'https://wahapedia.ru/kill-team3/kill-teams/blooded/',
+  'chaos cult':              'https://wahapedia.ru/kill-team3/kill-teams/chaos-cult/',
+  'fellgor ravager':         'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravager/',
+  'fellgor':                 'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravager/',
+
+  // ── CHAOS: OTHER ────────────────────────────────────────────────────
+  'plague marines':          'https://wahapedia.ru/kill-team3/kill-teams/plague-marines/',
+  'death guard':             'https://wahapedia.ru/kill-team3/kill-teams/plague-marines/',
+  'warpcoven':               'https://wahapedia.ru/kill-team3/kill-teams/warpcoven/',
+  'thousand sons':           'https://wahapedia.ru/kill-team3/kill-teams/warpcoven/',
+  'goremonger':              'https://wahapedia.ru/kill-team3/kill-teams/goremonger/',
+  'world eaters':            'https://wahapedia.ru/kill-team3/kill-teams/goremonger/',
+
+  // ── AELDARI ──────────────────────────────────────────────────────────
+  'corsair voidscarred':     'https://wahapedia.ru/kill-team3/kill-teams/corsair-voidscarred/',
+  'voidscarred':             'https://wahapedia.ru/kill-team3/kill-teams/corsair-voidscarred/',
+  'blades of khaine':        'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
+  'hand of the archon':      'https://wahapedia.ru/kill-team3/kill-teams/hand-of-the-archon/',
+  'mandrakes':               'https://wahapedia.ru/kill-team3/kill-teams/mandrakes/',
+  'void-dancer troupe':      'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'void-dancers':            'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'void dancers':            'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'harlequins':              'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+
+  // ── XENOS ────────────────────────────────────────────────────────────
+  'brood brother':           'https://wahapedia.ru/kill-team3/kill-teams/brood-brother/',
+  'brood brothers':          'https://wahapedia.ru/kill-team3/kill-teams/brood-brother/',
+  'wyrmblade':               'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
+  'genestealer cults':       'https://wahapedia.ru/kill-team3/kill-teams/wyrmblade/',
+  'farstalker kinband':      'https://wahapedia.ru/kill-team3/kill-teams/farstalker-kinband/',
+  'farstalkers':             'https://wahapedia.ru/kill-team3/kill-teams/farstalker-kinband/',
+  'hearthkyn salvager':      'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'hearthkyn':               'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'hernkyn yaegir':          'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-yaegir/',
+  'hernkyn pioneers':        'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-yaegir/',
+  'hierotek circle':         'https://wahapedia.ru/kill-team3/kill-teams/hierotek-circle/',
+  'canoptek circle':         'https://wahapedia.ru/kill-team3/kill-teams/canoptek-circle/',
+  'kommandos':               'https://wahapedia.ru/kill-team3/kill-teams/kommandos/',
+  'wrecka krew':             'https://wahapedia.ru/kill-team3/kill-teams/wrecka-krew/',
+  'pathfinders':             'https://wahapedia.ru/kill-team3/kill-teams/pathfinders/',
+  'vespid stingwings':       'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
+  'vespid':                  'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
+  'stealth battlesuits':     'https://wahapedia.ru/kill-team3/kill-teams/xv26-stealth-battlesuits/',
+  'xv26':                    'https://wahapedia.ru/kill-team3/kill-teams/xv26-stealth-battlesuits/',
+  'raveners':                'https://wahapedia.ru/kill-team3/kill-teams/raveners/',
+  'tyranids':                'https://wahapedia.ru/kill-team3/kill-teams/raveners/',
+
+  // ── LEGACY ALIASES (old team names people might still use) ───────────
+  'compurgation':            'https://wahapedia.ru/kill-team3/kill-teams/celestian-insidiants/',
+  'sisters of battle':       'https://wahapedia.ru/kill-team3/kill-teams/celestian-insidiants/',
+  'guardsmen':               'https://wahapedia.ru/kill-team3/kill-teams/death-korps/',
 };
 
 const CORE_RULES_URL = 'https://wahapedia.ru/kill-team3/the-rules/core-rules/';
@@ -58,18 +110,18 @@ const CORE_RULES_URL = 'https://wahapedia.ru/kill-team3/the-rules/core-rules/';
 const FACTION_ITEMS = {
   // ── VOID-DANCERS ──────────────────────────────────────────────────────
   'shimmershield':          'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
-  'harlequins kiss':        'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  "harlequin's kiss":       'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'fusion pistol':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'choreographer':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'troupe master':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'mirror aegis':           'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'prismatic cannon':       'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'veil of tears':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'cegorach':               'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'motley':                 'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'shadowseer':             'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
-  'death jester':           'https://wahapedia.ru/kill-team3/kill-teams/void-dancers/',
+  'harlequins kiss':        'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  "harlequin's kiss":       'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'fusion pistol':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'choreographer':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'troupe master':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'mirror aegis':           'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'prismatic cannon':       'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'veil of tears':          'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'cegorach':               'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'motley':                 'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'shadowseer':             'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
+  'death jester':           'https://wahapedia.ru/kill-team3/kill-teams/void-dancer-troupe/',
 
   // ── BLADES OF KHAINE ──────────────────────────────────────────────────
   'howling banshee':        'https://wahapedia.ru/kill-team3/kill-teams/blades-of-khaine/',
@@ -134,15 +186,15 @@ const FACTION_ITEMS = {
   'felarch':                'https://wahapedia.ru/kill-team3/kill-teams/corsair-voidscarred/',
 
   // ── HEARTHKYN SALVAGERS ───────────────────────────────────────────────
-  'etacarn plasma':         'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'magna-rail':             'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'kin warden':             'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'huntr':                  'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'theyn':                  'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'leagues of votann':      'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'votann':                 'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'grudge':                 'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
-  'ancestor core':          'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvagers/',
+  'etacarn plasma':         'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'magna-rail':             'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'kin warden':             'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'huntr':                  'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'theyn':                  'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'leagues of votann':      'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'votann':                 'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'grudge':                 'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
+  'ancestor core':          'https://wahapedia.ru/kill-team3/kill-teams/hearthkyn-salvager/',
 
   // ── HAND OF THE ARCHON ────────────────────────────────────────────────
   'kabalite':               'https://wahapedia.ru/kill-team3/kill-teams/hand-of-the-archon/',
@@ -161,21 +213,21 @@ const FACTION_ITEMS = {
   'power from pain':        'https://wahapedia.ru/kill-team3/kill-teams/hand-of-the-archon/',
 
   // ── DEATH KORPS OF KRIEG ──────────────────────────────────────────────
-  'grenadier':              'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
-  'watchmaster':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
-  'mole mortar':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
-  'krieg':                  'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
-  'demo charge':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps-of-krieg/',
+  'grenadier':              'https://wahapedia.ru/kill-team3/kill-teams/death-korps/',
+  'watchmaster':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps/',
+  'mole mortar':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps/',
+  'krieg':                  'https://wahapedia.ru/kill-team3/kill-teams/death-korps/',
+  'demo charge':            'https://wahapedia.ru/kill-team3/kill-teams/death-korps/',
 
   // ── IMPERIAL NAVY BREACHERS ───────────────────────────────────────────
-  'void sergeant':          'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'navis':                  'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'hatchcutter':            'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'boarding sabre':         'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'endurant':               'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'breachers':              'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'gheistskull':            'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
-  'armsman':                'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breachers/',
+  'void sergeant':          'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'navis':                  'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'hatchcutter':            'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'boarding sabre':         'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'endurant':               'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'breachers':              'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'gheistskull':            'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
+  'armsman':                'https://wahapedia.ru/kill-team3/kill-teams/imperial-navy-breacher/',
 
   // ── EXACTION SQUAD ────────────────────────────────────────────────────
   'vigilant':               'https://wahapedia.ru/kill-team3/kill-teams/exaction-squad/',
@@ -207,47 +259,6 @@ const FACTION_ITEMS = {
   'reanimation':            'https://wahapedia.ru/kill-team3/kill-teams/hierotek-circle/',
   'living metal':           'https://wahapedia.ru/kill-team3/kill-teams/hierotek-circle/',
   'aeonstave':              'https://wahapedia.ru/kill-team3/kill-teams/hierotek-circle/',
-  'voltaic staff':          'https://wahapedia.ru/kill-team3/kill-teams/hierotek-circle/',
-
-  // ── FELLGOR RAVAGERS ──────────────────────────────────────────────────
-  'fellgor shaman':         'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-  'beastgor':               'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-  'pestigor':               'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-  'beastman':               'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-  'chaos bray':             'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-  'gore-drenched':          'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-  'runehorn':               'https://wahapedia.ru/kill-team3/kill-teams/fellgor-ravagers/',
-
-  // ── TEMPESTUS AQUILONS ────────────────────────────────────────────────
-  'aquilon':                'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'scion':                  'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'tempestor':              'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'hot-shot':               'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'hotshot':                'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'volley gun':             'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-  'taurox':                 'https://wahapedia.ru/kill-team3/kill-teams/tempestus-aquilons/',
-
-  // ── INTERCESSION SQUAD ────────────────────────────────────────────────
-  'bolt carbine':           'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'auto bolt rifle':        'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'aggressor':              'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'intercessor':            'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'infiltrator comms':      'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'incursor sergeant':      'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'eliminator':             'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'las fusil':              'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-  'bolt sniper':            'https://wahapedia.ru/kill-team3/kill-teams/intercession-squad/',
-
-  // ── VETERAN GUARDSMEN ─────────────────────────────────────────────────
-  'veteran sergeant':       'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-  'confidant':              'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-  'spotter':                'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-  'hardened veteran':       'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-  'trooper':                'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-  'ogryn':                  'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-  'comms operator':         'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-  'medi-pack':              'https://wahapedia.ru/kill-team3/kill-teams/veteran-guardsmen/',
-
   // ── HUNTER CLADE ─────────────────────────────────────────────────────
   'skitarii ranger':        'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
   'skitarii vanguard':      'https://wahapedia.ru/kill-team3/kill-teams/hunter-clade/',
@@ -293,13 +304,13 @@ const FACTION_ITEMS = {
   'psyker':                 'https://wahapedia.ru/kill-team3/kill-teams/warpcoven/',
   'cabal ritual':           'https://wahapedia.ru/kill-team3/kill-teams/warpcoven/',
 
-  // ── HERNKYN PIONEERS ──────────────────────────────────────────────────
-  'hernkyn':                'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
-  'cthonian':               'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
-  'ironhead':               'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
-  'pan spectral scanner':   'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
-  'hylas':                  'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
-  'magna-coil':             'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-pioneers/',
+  // ── HERNKYN YAEGIR ──────────────────────────────────────────────────
+  'hernkyn':                'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-yaegir/',
+  'cthonian':               'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-yaegir/',
+  'ironhead':               'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-yaegir/',
+  'pan spectral scanner':   'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-yaegir/',
+  'hylas':                  'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-yaegir/',
+  'magna-coil':             'https://wahapedia.ru/kill-team3/kill-teams/hernkyn-yaegir/',
 
   // ── PHOBOS STRIKE TEAM ────────────────────────────────────────────────
   'reiver':                 'https://wahapedia.ru/kill-team3/kill-teams/phobos-strike-team/',
@@ -313,58 +324,18 @@ const FACTION_ITEMS = {
   'cadian':                 'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
   'hot-shot lasgun':        'https://wahapedia.ru/kill-team3/kill-teams/kasrkin/',
 
-  // ── TALONS OF THE EMPEROR ─────────────────────────────────────────────
-  'custodian':              'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-  'allarus':                'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-  'vertus praetor':         'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-  'sisters of silence':     'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-  'guardian spear':         'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-  'castellan axe':          'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-  'pyrithite spear':        'https://wahapedia.ru/kill-team3/kill-teams/talons-of-the-emperor/',
-
-  // ── GREY KNIGHTS ──────────────────────────────────────────────────────
-  'grey knight':            'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'paladin':                'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'purifier':               'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'purgation':              'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'nemesis force':          'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'psycannon':              'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'warding stave':          'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'incinerator':            'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-  'psilencer':              'https://wahapedia.ru/kill-team3/kill-teams/grey-knights/',
-
   // ── INQUISITORIAL AGENTS ──────────────────────────────────────────────
-  'inquisitor':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-  'acolyte warband':        'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-  'jokaero':                'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-  'deathwatch':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-  'daemonhost':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-  'penitent engine':        'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agents/',
-
-  // ── BLOOD ANGELS ─────────────────────────────────────────────────────
-  'blood angel':            'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
-  'sanguinary':             'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
-  'death company':          'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
-  'black rage':             'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
-  'red thirst':             'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
-  'glaive encarmine':       'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
-  'inferno pistol':         'https://wahapedia.ru/kill-team3/kill-teams/blood-angels/',
-
+  'inquisitor':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
+  'acolyte warband':        'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
+  'jokaero':                'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
+  'deathwatch':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
+  'daemonhost':             'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
+  'penitent engine':        'https://wahapedia.ru/kill-team3/kill-teams/inquisitorial-agent/',
   // ── VESPID STINGWINGS ─────────────────────────────────────────────────
   'stingwing':              'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
   'strain leader':          'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
   'neutron carbine':        'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
   'compound eyes':          'https://wahapedia.ru/kill-team3/kill-teams/vespid-stingwings/',
-
-  // ── COMPURGATION ─────────────────────────────────────────────────────
-  'canoness':               'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'battle sister':          'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'seraphim':               'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'zephyrim':               'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'celestian':              'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'act of faith':           'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'miracle dice':           'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
-  'ardent blade':           'https://wahapedia.ru/kill-team3/kill-teams/compurgation/',
 };
 
 function detectFactionItem(question) {
@@ -412,16 +383,19 @@ async function detectFactionViaAI(question, apiKey) {
 const TOPIC_URLS = {
   'killzone':            'https://wahapedia.ru/kill-team3/the-rules/killzones/',
   'kill zone':           'https://wahapedia.ru/kill-team3/the-rules/killzones/',
-  'mission':             'https://wahapedia.ru/kill-team3/the-rules/matched-play/',
-  'matched play':        'https://wahapedia.ru/kill-team3/the-rules/matched-play/',
-  'tac op':              'https://wahapedia.ru/kill-team3/the-rules/tac-ops/',
-  'tac ops':             'https://wahapedia.ru/kill-team3/the-rules/tac-ops/',
+  'mission':             'https://wahapedia.ru/kill-team3/the-rules/the-missions/',
+  'matched play':        'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'tac op':              'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'tac ops':             'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'crit op':             'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'crit ops':            'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'kill op':             'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'kill ops':            'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
+  'victory points':      'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
   'universal equipment': 'https://wahapedia.ru/kill-team3/the-rules/universal-equipment/',
   'appendix':            'https://wahapedia.ru/kill-team3/the-rules/appendix/',
   'keyword':             'https://wahapedia.ru/kill-team3/the-rules/appendix/',
   'keywords':            'https://wahapedia.ru/kill-team3/the-rules/appendix/',
-  'universal ploy':      'https://wahapedia.ru/kill-team3/the-rules/ploys/',
-  'universal ploys':     'https://wahapedia.ru/kill-team3/the-rules/ploys/',
   'approved ops':        'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
   'approved op':         'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
   'approved ops 2025':   'https://wahapedia.ru/kill-team3/the-rules/approved-ops-2025/',
@@ -435,11 +409,10 @@ const TOPIC_URLS = {
 
 // Keywords to help find the right section in the page
 const SECTION_KEYWORDS = {
-  // Ploys
-  'firefight ploy':     ['Firefight Ploy', 'FIREFIGHT PLOY'],
-  'strategic ploy':     ['Strategic Ploy', 'STRATEGIC PLOY'],
-  'tactical ploy':      ['Tactical Ploy', 'TACTICAL PLOY'],
-  'ploy':               ['Firefight Ploy', 'Strategic Ploy', 'PLOY'],
+  // Ploys (faction-specific — Strategy Ploys and Firefight Ploys are on each faction's page)
+  'firefight ploy':     ['Firefight Ploy', 'FIREFIGHT PLOY', 'Firefight Ploys'],
+  'strategy ploy':      ['Strategy Ploy', 'STRATEGY PLOY', 'Strategy Ploys', 'Strategic Ploy'],
+  'ploy':               ['Firefight Ploy', 'Strategy Ploy', 'PLOY', 'Ploys'],
 
   // Actions — include specific phrases from the actual rules sections
   'normal move':        ['Normal Move', 'NORMAL MOVE', 'Normal Move action', 'make a Normal Move'],
@@ -543,7 +516,9 @@ const SECTION_KEYWORDS = {
   'ability':            ['Ability', 'Abilities', 'ABILITY'],
   'special rule':       ['Special Rule', 'SPECIAL RULE'],
   'unique action':      ['Unique Action', 'UNIQUE ACTION'],
-  'tac op':             ['Tac Op', 'TAC OP'],
+  'tac op':             ['Tac Op', 'TAC OP', 'Tac Ops'],
+  'crit op':            ['Crit Op', 'CRIT OP', 'Crit Ops'],
+  'kill op':            ['Kill Op', 'KILL OP', 'Kill Ops'],
 };
 
 function detectTopicUrls(question) {
@@ -843,7 +818,7 @@ Rule says: "select one valid target within control range of the active operative
 CORRECT reasoning: The word "one" explicitly limits you to a single target per Fight action. Even if multiple enemies are in range, you pick one.
 
 Example 3 — Absence of prohibition is permission:
-Q: "Can I use both a Strategic Ploy and a Firefight Ploy in the same turning point?"
+Q: "Can I use both a Strategy Ploy and a Firefight Ploy in the same turning point?"
 CORRECT reasoning: The rules define when each ploy type can be used but never state they are mutually exclusive. Since no rule prohibits using both, you can.
 
 Instructions:
